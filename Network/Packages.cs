@@ -1,35 +1,21 @@
 ﻿using System;
 namespace Network
 {
-    namespace Helper
-    {
-        public static partial class NetworkHelper
-        {
-            public static Packages.PackageType GetPackageType(byte[] data)
-            {
-                if (data == null)
-                {
-                    return Packages.PackageType.Unknown;
-                }
-                return (Packages.PackageType)data[data.Length - 1];
-            }
+	// NetworkHelper Extention
+	public static partial class NetworkHelper
+	{
+		public static Packages.PackageType GetPackageType(byte[] data)
+		{
+			if (data == null)
+			{
+				return Packages.PackageType.Unknown;
+			}
+			return (Packages.PackageType)data[data.Length - 1];
+		}
+	}
 
-            public static Packages.Package DeserializeRequest(byte[] data)
-            {
-                switch (GetPackageType(data))
-                {
-                    case Packages.PackageType.Login:
-                        return Deserialize<Packages.LoginRequest>(data);
-                    case Packages.PackageType.SelectCharacter:
-                        return Deserialize<Packages.SelectCharacterRequest>(data);
-                    case Packages.PackageType.GetAccountCharacters:
-                        return Deserialize<Packages.GetAccountCharactersRequest>(data);
-                }
-                return new Packages.Package();
-            }
-        }
-    }
-    namespace Packages
+
+	namespace Packages
     {
         public enum PackageType
         {
