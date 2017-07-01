@@ -7,6 +7,12 @@ namespace Network
 
         public static partial class NetworkHelper
         {
+            private static int SIZE_INT = sizeof(int);
+            private static int SIZE_LONG = sizeof(long);
+            private static int SIZE_BOOL = sizeof(bool);
+            private static int SIZE_FLOAT = sizeof(float);
+            private static int SIZE_DOUBLE = sizeof(double);
+
             public static byte[] Serialize(object source)
             {
                 if (source == null)
@@ -170,23 +176,23 @@ namespace Network
                 {
                     if (fieldInfo.FieldType == typeof(bool))
                     {
-                        return sizeof(bool);
+                        return SIZE_BOOL;
                     }
                     else if (fieldInfo.FieldType == typeof(int))
                     {
-                        return sizeof(int);
+                        return SIZE_INT;
                     }
                     else if (fieldInfo.FieldType == typeof(long))
                     {
-                        return sizeof(long);
+                        return SIZE_LONG;
                     }
                     else if (fieldInfo.FieldType == typeof(double))
                     {
-                        return sizeof(double);
+                        return SIZE_DOUBLE;
                     }
                     else if (fieldInfo.FieldType == typeof(float))
                     {
-                        return sizeof(float);
+                        return SIZE_FLOAT;
 
                         //Advanced Types
                     }
