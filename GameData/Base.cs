@@ -1,7 +1,8 @@
 ﻿using System;
 namespace GameData
 {
-    public class Location{
+    public class Location
+    {
         public int Map;
         public string Name;
         public float CoordX;
@@ -9,11 +10,13 @@ namespace GameData
         public float CoordZ;
     }
 
-    public enum Class{
+    public enum Class
+    {
         Mage, Warrior, Priest, Rouge
     }
 
-    public enum Race{
+    public enum Race
+    {
         Troll, Orc, Human, Goblin
     }
 }

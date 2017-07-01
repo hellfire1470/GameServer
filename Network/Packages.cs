@@ -1,17 +1,23 @@
 ﻿using System;
 namespace Network
 {
-    namespace Helper{
-        public static partial class NetworkHelper{
-            public static Packages.PackageType GetPackageType(byte[] data){
-                if(data == null){
+    namespace Helper
+    {
+        public static partial class NetworkHelper
+        {
+            public static Packages.PackageType GetPackageType(byte[] data)
+            {
+                if (data == null)
+                {
                     return Packages.PackageType.Unknown;
                 }
-                return (Packages.PackageType)data[data.Length-1];
+                return (Packages.PackageType)data[data.Length - 1];
             }
 
-            public static Packages.Package DeserializeRequest(byte[] data){
-                switch(GetPackageType(data)){
+            public static Packages.Package DeserializeRequest(byte[] data)
+            {
+                switch (GetPackageType(data))
+                {
                     case Packages.PackageType.Login:
                         return Deserialize<Packages.LoginRequest>(data);
                     case Packages.PackageType.SelectCharacter:
@@ -33,7 +39,7 @@ namespace Network
         public class Package
         {
             public PackageType Type = PackageType.Unknown;
-            public Package(){}
+            public Package() { }
             public Package(PackageType type)
             {
                 Type = type;
@@ -43,7 +49,7 @@ namespace Network
         public class Response : Package
         {
             public bool Success = false;
-            public Response() : base(){}
+            public Response() : base() { }
             public Response(PackageType type, bool success = false) : base(type)
             {
                 Success = success;
@@ -69,14 +75,17 @@ namespace Network
         }
         #endregion
         #region "Logout"
-        public enum LogoutStatus{
+        public enum LogoutStatus
+        {
             CharacterSelection, TitleScreen
         }
-        public class LogoutRequest: Request{
-            public LogoutRequest() : base(PackageType.Logout) {}
-            public LogoutStatus Status = LogoutStatus.TitleScreen; 
+        public class LogoutRequest : Request
+        {
+            public LogoutRequest() : base(PackageType.Logout) { }
+            public LogoutStatus Status = LogoutStatus.TitleScreen;
         }
-        public class LogoutResponse: Response{
+        public class LogoutResponse : Response
+        {
             public LogoutResponse() : base(PackageType.Logout) { }
             public LogoutStatus Status;
         }

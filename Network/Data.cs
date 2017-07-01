@@ -4,11 +4,11 @@ namespace Network
 {
     namespace Data
     {
-		public class Account
-		{
-			public int Id;
-			public string Username;
-		}
+        public class Account
+        {
+            public int Id;
+            public string Username;
+        }
 
         public class Character
         {
