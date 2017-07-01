@@ -1,5 +1,4 @@
-﻿using System;
-namespace Network
+﻿namespace Network
 {
 	// NetworkHelper Extention
 	public static partial class NetworkHelper

@@ -13,12 +13,11 @@ namespace Network
 
     public class UdpServer
     {
-        int _port;
-        IPEndPoint _listener;
-        System.Net.Sockets.UdpClient _server;
+        private int _port;
+        private IPEndPoint _listener;
+        private System.Net.Sockets.UdpClient _server;
 
-
-        Thread _receiveThread;
+        private Thread _receiveThread;
 
         public event EventHandler<NetworkReceiveEventArgs> DataReceived;
 
@@ -64,7 +63,5 @@ namespace Network
         {
             _server.Send(data, data.Length, address);
         }
-
-
     }
 }
