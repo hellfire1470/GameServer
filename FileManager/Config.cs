@@ -24,7 +24,7 @@ namespace FileManager
             {
                 File.WriteAllText(path, "");
             }
-            foreach(string line in File.ReadLines(path)){
+            foreach(string line in File.ReadAllLines(path)){
                 string[] keyValue = line.Split('=');
                 _configs[keyValue[0]] = keyValue[1];
             }
