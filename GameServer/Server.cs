@@ -8,6 +8,8 @@ using FileManager;
 namespace GameServer
 {
     static class Globals{
+		public static Config ConfigurationFile = new Config("config.ini");
+
         public static string Name = "Example Name";
         public static int Port = 5090;
         public static List<long> Admins = new List<long>();
@@ -24,6 +26,8 @@ namespace GameServer
             LoadConfigurationFile();
             ApplyStartupArgs(args);
 
+            SetupCommands();
+
             Console.WriteLine("Listening on Port: " + Globals.Port);
             _server = new UdpServer(Globals.Port);
             _server.DataReceived += OnServerReceive;
@@ -32,20 +36,22 @@ namespace GameServer
             Console.WriteLine("Server Name: " + Globals.Name);
             while (true)
             {
-                string input = Console.ReadLine().ToLower();
-                if (input == "quit")
-                {
-                    //todo: do exit routine
-                    break;
-                }
+                string input = Console.ReadLine();
+                CommandListener.HandleCommand(input);
             }
-            Environment.Exit(0);
+           // Environment.Exit(0);
+        }
+
+        public static void SetupCommands(){
+            CommandListener.AddCommand(CommandManager.Quit);
+            CommandListener.AddCommand(CommandManager.ChangeName);
+            CommandListener.AddCommand(CommandManager.ChangePort);
+            CommandListener.AddCommand(CommandManager.Help);
         }
 
         public static void LoadConfigurationFile(){
 			Console.WriteLine("Loading Configuration");
-			Config config = new Config("config.ini");
-			foreach (Config.KeyValue keyvalue in config.GetConfigs())
+            foreach (Config.KeyValue keyvalue in Globals.ConfigurationFile.GetConfigs())
 			{
                 switch (keyvalue.Key.ToLower())
 				{
