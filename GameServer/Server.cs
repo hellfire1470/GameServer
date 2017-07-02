@@ -37,14 +37,21 @@ namespace GameServer
             while (true)
             {
                 string input = Console.ReadLine();
-                CommandListener.HandleCommand(input);
+                try
+                {
+                    CommandListener.HandleCommand(input);
+                } catch (Exception ex){
+                    Console.WriteLine("Error: " + ex.Message);
+                }
             }
            // Environment.Exit(0);
         }
 
         public static void SetupCommands(){
-            CommandListener.AddCommand(CommandManager.Quit);
-            CommandListener.AddCommand(CommandManager.ChangeName);
+            Console.WriteLine("Setup commands");
+			CommandListener.AddCommand(CommandManager.Quit);
+			CommandListener.AddCommand(CommandManager.ChangeName);
+			CommandListener.AddCommand(CommandManager.Online);
             CommandListener.AddCommand(CommandManager.ChangePort);
             CommandListener.AddCommand(CommandManager.Help);
         }
@@ -71,7 +78,6 @@ namespace GameServer
                         break;
 				}
 			}
-            Console.WriteLine("Loading Configuration done.");
         }
 
         public static void ApplyStartupArgs(string[] args){
@@ -92,6 +98,8 @@ namespace GameServer
             }
             Account account = _accounts[e.Sender];
 
+            Console.WriteLine("Received something");
+
             switch (NetworkHelper.GetPackageType(e.Data))
             {
                 #region "Login"
@@ -99,11 +107,12 @@ namespace GameServer
                     LoginRequest request = NetworkHelper.Deserialize<LoginRequest>(e.Data);
                     if (account.Login(request.Username, request.Password))
                     {
-                        _server.SendMessage(e.Sender, NetworkHelper.Serialize(new LoginResponse() { Success = true }));
+                        _server.SendBytes(e.Sender, NetworkHelper.Serialize(new LoginResponse() { Success = true }));
+                        Console.WriteLine("Authentificated");
                     }
                     else
                     {
-                        _server.SendMessage(e.Sender, NetworkHelper.Serialize(new LoginResponse()));
+                        _server.SendBytes(e.Sender, NetworkHelper.Serialize(new LoginResponse()));
                     }
                     break;
                 #endregion
@@ -113,19 +122,19 @@ namespace GameServer
                     if (lr.Status == LogoutStatus.CharacterSelection)
                     {
                         account.LeaveWorld();
-                        _server.SendMessage(e.Sender, NetworkHelper.Serialize(new LogoutResponse() { Success = true, Status = LogoutStatus.CharacterSelection }));
+                        _server.SendBytes(e.Sender, NetworkHelper.Serialize(new LogoutResponse() { Success = true, Status = LogoutStatus.CharacterSelection }));
                     }
                     else if (lr.Status == LogoutStatus.TitleScreen)
                     {
                         account.Logout();
-                        _server.SendMessage(e.Sender, NetworkHelper.Serialize(new LogoutResponse() { Success = true, Status = LogoutStatus.TitleScreen }));
+                        _server.SendBytes(e.Sender, NetworkHelper.Serialize(new LogoutResponse() { Success = true, Status = LogoutStatus.TitleScreen }));
                     }
                     break;
                 #endregion
                 #region "GetAccountCharacters"
                 case PackageType.GetAccountCharacters:
                     GetAccountCharactersResponse gacr = new GetAccountCharactersResponse() { Success = true, Characters = account.GetCharacters() };
-                    _server.SendMessage(e.Sender, NetworkHelper.Serialize(gacr));
+                    _server.SendBytes(e.Sender, NetworkHelper.Serialize(gacr));
                     break;
                 #endregion
                 #region "SelectCharacter"
@@ -136,7 +145,7 @@ namespace GameServer
                     {
                         scr.Success = true;
                     }
-                    _server.SendMessage(e.Sender, NetworkHelper.Serialize(scr));
+                    _server.SendBytes(e.Sender, NetworkHelper.Serialize(scr));
                     break;
                 #endregion
                 default:
