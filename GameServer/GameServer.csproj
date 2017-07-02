@@ -46,6 +46,10 @@
       <Project>{4A9D27B2-4980-4108-8CCF-1D2E536226AA}</Project>
       <Name>GameData</Name>
     </ProjectReference>
+    <ProjectReference Include="..\FileManager\FileManager.csproj">
+      <Project>{54CAB7AE-4BB4-4C97-A495-E0F358B82A90}</Project>
+      <Name>FileManager</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
