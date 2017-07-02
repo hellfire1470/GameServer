@@ -11,17 +11,15 @@ namespace Network
         private System.Net.Sockets.UdpClient _client;
         private IPEndPoint _endPoint;
 
+        private Thread _receiveThread;
+
         public event EventHandler<NetworkReceiveEventArgs> DataReceived;
-        public event EventHandler Connected;
-        public event EventHandler ConnectionLost;
-
-
-        public bool IsConnected { get; private set; }
 
         public UdpClient(string host, int port)
         {
             _host = host;
-            _port = 5090;
+            _port = port;
+
         }
 
         public void Connect()
@@ -31,9 +29,9 @@ namespace Network
 
             _client.Connect(_endPoint);
 
-            Thread receiveThread = new Thread(ReceiveData);
-            receiveThread.Start();
 
+			_receiveThread = new Thread(ReceiveData);
+			_receiveThread.Start();
         }
 
         protected virtual void OnDataReceived(byte[] data)
@@ -49,7 +47,7 @@ namespace Network
             }
         }
 
-        public void ReceiveData()
+        private void ReceiveData()
         {
             while (true)
             {
@@ -58,7 +56,7 @@ namespace Network
             }
         }
 
-        public void SendMessage(byte[] data)
+        public void SendBytes(byte[] data)
         {
             _client.Send(data, data.Length);
         }
