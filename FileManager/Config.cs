@@ -57,6 +57,14 @@ namespace FileManager
             _configs[key] = value;
         }
 
+        public void RemoveKey(string key)
+        {
+            if(_configs.ContainsKey(key)){
+                _configs.Remove(key);
+                _refreshKeysValues = true;
+            }
+        }
+
         public void Apply(){
             File.WriteAllText(_path, AsString());
         }
