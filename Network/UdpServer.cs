@@ -21,6 +21,8 @@ namespace Network
 
         public event EventHandler<NetworkReceiveEventArgs> DataReceived;
 
+        private bool _started = false;
+
         public UdpServer(int port)
         {
             _port = port;
@@ -28,11 +30,17 @@ namespace Network
 
         public void Start()
         {
-            _listener = new IPEndPoint(IPAddress.Any, _port);
-            _server = new System.Net.Sockets.UdpClient(_listener);
+            if (!_started)
+            {
+                _started = true;
+                _listener = new IPEndPoint(IPAddress.Any, _port);
+                _server = new System.Net.Sockets.UdpClient(_listener);
 
-            _receiveThread = new Thread(ReceiveData);
-            _receiveThread.Start();
+                _receiveThread = new Thread(ReceiveData);
+                _receiveThread.Start();
+            } else {
+                throw new Exception("Server already running");
+            }
         }
 
 
@@ -48,7 +56,7 @@ namespace Network
             }
         }
 
-        public void ReceiveData()
+        private void ReceiveData()
         {
             while (true)
             {
@@ -59,7 +67,7 @@ namespace Network
             }
         }
 
-        public void SendMessage(IPEndPoint address, byte[] data)
+        public void SendBytes(IPEndPoint address, byte[] data)
         {
             _server.Send(data, data.Length, address);
         }
