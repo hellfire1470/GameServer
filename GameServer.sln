@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Network", "Network\Network.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameData", "GameData\GameData.csproj", "{4A9D27B2-4980-4108-8CCF-1D2E536226AA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileManager", "FileManager\FileManager.csproj", "{54CAB7AE-4BB4-4C97-A495-E0F358B82A90}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -25,5 +27,9 @@ Global
 		{4A9D27B2-4980-4108-8CCF-1D2E536226AA}.Debug|x86.Build.0 = Debug|Any CPU
 		{4A9D27B2-4980-4108-8CCF-1D2E536226AA}.Release|x86.ActiveCfg = Release|Any CPU
 		{4A9D27B2-4980-4108-8CCF-1D2E536226AA}.Release|x86.Build.0 = Release|Any CPU
+		{54CAB7AE-4BB4-4C97-A495-E0F358B82A90}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{54CAB7AE-4BB4-4C97-A495-E0F358B82A90}.Debug|x86.Build.0 = Debug|Any CPU
+		{54CAB7AE-4BB4-4C97-A495-E0F358B82A90}.Release|x86.ActiveCfg = Release|Any CPU
+		{54CAB7AE-4BB4-4C97-A495-E0F358B82A90}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
