@@ -4,11 +4,14 @@ using Network.Packages;
 using System.Collections.Generic;
 using System.Net;
 using FileManager;
+using Sql;
 
 namespace GameServer
 {
     static class Globals{
 		public static Config ConfigurationFile = new Config("config.ini");
+
+        public static SqlBase SqlBase = new SqlBase();
 
         public static string Name = "Example Name";
         public static int Port = 5090;
@@ -54,6 +57,8 @@ namespace GameServer
 			CommandListener.AddCommand(CommandManager.Online);
             CommandListener.AddCommand(CommandManager.ChangePort);
             CommandListener.AddCommand(CommandManager.Help);
+            CommandListener.AddCommand(CommandManager.Show);
+            CommandListener.AddCommand(CommandManager.Account);
         }
 
         public static void LoadConfigurationFile(){
