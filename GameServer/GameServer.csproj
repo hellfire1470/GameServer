@@ -37,6 +37,7 @@
     <Compile Include="Account.cs" />
     <Compile Include="Character.cs" />
     <Compile Include="CommandListener.cs" />
+    <Compile Include="SqlBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Network\Network.csproj">
@@ -50,6 +51,10 @@
     <ProjectReference Include="..\FileManager\FileManager.csproj">
       <Project>{54CAB7AE-4BB4-4C97-A495-E0F358B82A90}</Project>
       <Name>FileManager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SQL\SQL.csproj">
+      <Project>{F3914058-FF59-4446-BFDB-A18EB27B27E8}</Project>
+      <Name>SQL</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
