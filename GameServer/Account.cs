@@ -10,12 +10,13 @@ namespace GameServer
 
         public bool Login(string user, string password)
         {
-            //todo:: write authentification
-            if (user == "123" && password == "123")
+            SqlAccountData sqlData = Globals.SqlBase.GetAccount(user);
+            //todo:: hash password in database
+            if (sqlData != null && user == sqlData.Username && password == sqlData.Password)
             {
                 Authentificated = true;
-                Username = user;
-                Id = 0;
+                Username = sqlData.Username;
+                Id = sqlData.Id;
             }
             return Authentificated;
         }
