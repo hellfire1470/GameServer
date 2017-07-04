@@ -26,10 +26,10 @@ namespace GameServer
                 Console.WriteLine("Name can not be empty");
                 return;
             }
-			Globals.ConfigurationFile.SetValue("name", name);
-			Globals.ConfigurationFile.Apply();
-			Globals.Name = name;
-			Console.WriteLine("Servername changed to: " + name);
+            Globals.ConfigurationFile.SetValue("name", name);
+            Globals.ConfigurationFile.Apply();
+            Globals.Name = name;
+            Console.WriteLine("Servername changed to: " + name);
 
 
         }, "Changes the name of this server. Type 'name ?' to get more information");
@@ -90,6 +90,68 @@ namespace GameServer
             Console.WriteLine(MainClass._accounts.Count + " Accounts are ingame");
         }, "Show online players");
         #endregion
+
+        #region "show"
+        public static Cmd Show = new Cmd(new string[] { "show" }, (string[] args) =>
+        {
+            if (args.Length > 1)
+            {
+                if (args[0] == "account")
+                {
+                    string account = args[1];
+                    int id = 0;
+                    SqlAccountData accountData;
+                    if (int.TryParse(account, out id))
+                    {
+                        accountData = Globals.SqlBase.GetAccount(id);
+                    }
+                    else
+                    {
+                        accountData = Globals.SqlBase.GetAccount(account);
+                    }
+                    if (accountData != null)
+                    {
+                        Console.WriteLine("Here is the dataset for " + account);
+                        Console.WriteLine("id".PadRight(20) + accountData.Id.ToString());
+                        Console.WriteLine("name".PadRight(20) + accountData.Username);
+                        Console.WriteLine("password".PadRight(20) + accountData.Password);
+                    }
+                    else
+                    {
+                        Console.WriteLine("No dataset found for " + account);
+                    }
+                }
+                if (args[0] == "characters")
+                {
+
+                }
+            }
+        });
+        #endregion
+
+        #region "account"
+        public static Cmd Account = new Cmd(new string[] { "account" }, (string[] args) => {
+            if(args.Length > 1)
+            {
+                if(args[0] == "create"){
+                    if(args.Length == 3){
+                        string username = args[1];
+                        string password = args[2];
+                        if(username.Trim(' ') != "" && password.Trim(' ') != ""){
+                            if(Globals.SqlBase.CreateAccount(username, password)){
+                                Console.WriteLine("Account " + username + " successfully created");
+                            } else {
+                                Console.WriteLine("Failed to create account " + username);
+                            }
+                        }
+                    } else {
+                        Console.WriteLine("Wrong usage of command account create.");
+                        Console.WriteLine("usage: account create <username> <password>");
+                    }
+                }
+            }
+        });
+#endregion
     }
 
     public delegate void CmdAction(string[] args);
