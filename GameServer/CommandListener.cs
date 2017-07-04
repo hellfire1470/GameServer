@@ -130,28 +130,37 @@ namespace GameServer
         #endregion
 
         #region "account"
-        public static Cmd Account = new Cmd(new string[] { "account" }, (string[] args) => {
-            if(args.Length > 1)
+        public static Cmd Account = new Cmd(new string[] { "account" }, (string[] args) =>
+        {
+            if (args.Length > 1)
             {
-                if(args[0] == "create"){
-                    if(args.Length == 3){
+                if (args[0] == "create")
+                {
+                    if (args.Length == 3)
+                    {
                         string username = args[1];
                         string password = args[2];
-                        if(username.Trim(' ') != "" && password.Trim(' ') != ""){
-                            if(Globals.SqlBase.CreateAccount(username, password)){
+                        if (username.Trim(' ') != "" && password.Trim(' ') != "")
+                        {
+                            if (Globals.SqlBase.CreateAccount(username, password))
+                            {
                                 Console.WriteLine("Account " + username + " successfully created");
-                            } else {
+                            }
+                            else
+                            {
                                 Console.WriteLine("Failed to create account " + username);
                             }
                         }
-                    } else {
+                    }
+                    else
+                    {
                         Console.WriteLine("Wrong usage of command account create.");
                         Console.WriteLine("usage: account create <username> <password>");
                     }
                 }
             }
         });
-#endregion
+        #endregion
     }
 
     public delegate void CmdAction(string[] args);

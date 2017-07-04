@@ -8,8 +8,9 @@ using Sql;
 
 namespace GameServer
 {
-    static class Globals{
-		public static Config ConfigurationFile = new Config("config.ini");
+    static class Globals
+    {
+        public static Config ConfigurationFile = new Config("config.ini");
 
         public static SqlBase SqlBase = new SqlBase();
 
@@ -43,56 +44,62 @@ namespace GameServer
                 try
                 {
                     CommandListener.HandleCommand(input);
-                } catch (Exception ex){
+                }
+                catch (Exception ex)
+                {
                     Console.WriteLine("Error: " + ex.Message);
                 }
             }
-           // Environment.Exit(0);
+            // Environment.Exit(0);
         }
 
-        public static void SetupCommands(){
+        public static void SetupCommands()
+        {
             Console.WriteLine("Setup commands");
-			CommandListener.AddCommand(CommandManager.Quit);
-			CommandListener.AddCommand(CommandManager.ChangeName);
-			CommandListener.AddCommand(CommandManager.Online);
+            CommandListener.AddCommand(CommandManager.Quit);
+            CommandListener.AddCommand(CommandManager.ChangeName);
+            CommandListener.AddCommand(CommandManager.Online);
             CommandListener.AddCommand(CommandManager.ChangePort);
             CommandListener.AddCommand(CommandManager.Help);
             CommandListener.AddCommand(CommandManager.Show);
             CommandListener.AddCommand(CommandManager.Account);
         }
 
-        public static void LoadConfigurationFile(){
-			Console.WriteLine("Loading Configuration");
+        public static void LoadConfigurationFile()
+        {
+            Console.WriteLine("Loading Configuration");
             foreach (Config.KeyValue keyvalue in Globals.ConfigurationFile.GetConfigs())
-			{
+            {
                 switch (keyvalue.Key.ToLower())
-				{
+                {
                     case "name":
                         Globals.Name = keyvalue.Value;
                         break;
-					case "port":
+                    case "port":
                         int.TryParse(keyvalue.Value, out Globals.Port);
-						break;
+                        break;
                     case "admins":
-                        foreach(string id in keyvalue.Value.Split(',')){
+                        foreach (string id in keyvalue.Value.Split(','))
+                        {
                             if (long.TryParse(id, out long Id))
                             {
                                 Globals.Admins.Add(Id);
                             }
                         }
                         break;
-				}
-			}
+                }
+            }
         }
 
-        public static void ApplyStartupArgs(string[] args){
-			for (int i = 0; i < args.Length; i++)
-			{
-				if (args[i] == "-p")
-				{
-					int.TryParse(args[i + 1], out Globals.Port);
-				}
-			}
+        public static void ApplyStartupArgs(string[] args)
+        {
+            for (int i = 0; i < args.Length; i++)
+            {
+                if (args[i] == "-p")
+                {
+                    int.TryParse(args[i + 1], out Globals.Port);
+                }
+            }
         }
 
         public static void OnServerReceive(object sender, NetworkReceiveEventArgs e)

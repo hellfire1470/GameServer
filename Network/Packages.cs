@@ -1,21 +1,21 @@
 ﻿
 namespace Network
 {
-	// NetworkHelper Extention
-	public static partial class NetworkHelper
-	{
-		public static Packages.PackageType GetPackageType(byte[] data)
-		{
-			if (data == null)
-			{
-				return Packages.PackageType.Unknown;
-			}
-			return (Packages.PackageType)data[data.Length - 1];
-		}
-	}
+    // NetworkHelper Extention
+    public static partial class NetworkHelper
+    {
+        public static Packages.PackageType GetPackageType(byte[] data)
+        {
+            if (data == null)
+            {
+                return Packages.PackageType.Unknown;
+            }
+            return (Packages.PackageType)data[data.Length - 1];
+        }
+    }
 
 
-	namespace Packages
+    namespace Packages
     {
         public enum PackageType
         {

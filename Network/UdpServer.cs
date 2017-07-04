@@ -38,7 +38,9 @@ namespace Network
 
                 _receiveThread = new Thread(ReceiveData);
                 _receiveThread.Start();
-            } else {
+            }
+            else
+            {
                 throw new Exception("Server already running");
             }
         }

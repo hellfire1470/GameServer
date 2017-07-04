@@ -30,8 +30,8 @@ namespace Network
             _client.Connect(_endPoint);
 
 
-			_receiveThread = new Thread(ReceiveData);
-			_receiveThread.Start();
+            _receiveThread = new Thread(ReceiveData);
+            _receiveThread.Start();
         }
 
         protected virtual void OnDataReceived(byte[] data)
