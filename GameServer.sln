@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameData", "GameData\GameDa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileManager", "FileManager\FileManager.csproj", "{54CAB7AE-4BB4-4C97-A495-E0F358B82A90}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQL", "SQL\SQL.csproj", "{F3914058-FF59-4446-BFDB-A18EB27B27E8}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -33,9 +31,5 @@ Global
 		{54CAB7AE-4BB4-4C97-A495-E0F358B82A90}.Debug|x86.Build.0 = Debug|Any CPU
 		{54CAB7AE-4BB4-4C97-A495-E0F358B82A90}.Release|x86.ActiveCfg = Release|Any CPU
 		{54CAB7AE-4BB4-4C97-A495-E0F358B82A90}.Release|x86.Build.0 = Release|Any CPU
-		{F3914058-FF59-4446-BFDB-A18EB27B27E8}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{F3914058-FF59-4446-BFDB-A18EB27B27E8}.Debug|x86.Build.0 = Debug|Any CPU
-		{F3914058-FF59-4446-BFDB-A18EB27B27E8}.Release|x86.ActiveCfg = Release|Any CPU
-		{F3914058-FF59-4446-BFDB-A18EB27B27E8}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -1,10 +1,9 @@
 ﻿using System.IO;
-using System.Data.Common;
+using System.Data;
 using Mono.Data.Sqlite;
 using System.Collections.Generic;
-using System;
 
-namespace Sql
+namespace FileManager
 {
     public class SQL
     {

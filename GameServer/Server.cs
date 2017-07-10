@@ -4,7 +4,6 @@ using Network.Packages;
 using System.Collections.Generic;
 using System.Net;
 using FileManager;
-using Sql;
 
 namespace GameServer
 {

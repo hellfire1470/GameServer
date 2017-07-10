@@ -52,10 +52,6 @@
       <Project>{54CAB7AE-4BB4-4C97-A495-E0F358B82A90}</Project>
       <Name>FileManager</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SQL\SQL.csproj">
-      <Project>{F3914058-FF59-4446-BFDB-A18EB27B27E8}</Project>
-      <Name>SQL</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -86,8 +86,18 @@ namespace GameServer
         public static Cmd Online = new Cmd(new string[] { "online" }, (string[] args) =>
         {
             Console.WriteLine(MainClass._accounts.Count + " Clients are connected to the server");
-            Console.WriteLine(MainClass._accounts.Count + " Accounts are logged in");
-            Console.WriteLine(MainClass._accounts.Count + " Accounts are ingame");
+            int logged_in = 0;
+            int ingame = 0;
+            foreach(Account account in MainClass._accounts.Values){
+                if(account.Authentificated){
+                    logged_in++;
+                }
+                if(account.InGame){
+                    ingame++;
+                }
+            }
+            Console.WriteLine(logged_in + " Accounts are logged in");
+            Console.WriteLine(ingame + " Accounts are ingame");
         }, "Show online players");
         #endregion
 
@@ -161,6 +171,13 @@ namespace GameServer
             }
         });
         #endregion
+
+        #region "stats"
+        public static Cmd Stats = new Cmd(new string[] { "stats" }, (string[] args) =>
+        {
+
+        });
+#endregion
     }
 
     public delegate void CmdAction(string[] args);

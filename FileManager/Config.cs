@@ -61,8 +61,11 @@ namespace FileManager
         public void SetValue(string key, string value)
         {
             if (key.Contains("=") || value.Contains("=")) throw new Exception("key or value can not contain '=' char");
-            _refreshKeysValues = true;
-            _configs[key] = value;
+
+            if (_configs[key] != value){
+                _refreshKeysValues = true;
+				_configs[key] = value;   
+            }
         }
 
         public void RemoveKey(string key)
