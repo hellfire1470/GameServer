@@ -29,12 +29,25 @@ namespace GameServer
 
     public class SqlBase : SQL
     {
-        public SqlBase() : base("accounts.sqlite", (SQL sql) =>
+        public SqlBase() : base("data.sqlite", (SQL sql) =>
         {
             sql.ExecuteNonQuery("create table account(id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR[30] UNIQUE, password VARCHAR[255])");
             sql.ExecuteNonQuery("create table chars(id INTEGER PRIMARY KEY AUTOINCREMENT, accountId INTEGER, name VERCHAR[30] UNIQUE, class INTEGER, " +
-                             "race INTEGER, locationId INTEGER , level INTEGER, exp INTEGER, map INTEGER, coordx INTEGER, coordy INTEGER, " +
+                             "race INTEGER, locationId INTEGER, level INTEGER, exp INTEGER, map INTEGER, coordx INTEGER, coordy INTEGER, " +
                              "coordz INTEGER, CONSTRAINT FK_CharsAccountId FOREIGN KEY (accountId) REFERENCES account(id))");
+            sql.ExecuteNonQuery("create table fraction(id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR[100] UNIQUE)");
+            sql.ExecuteNonQuery("insert into fraction(name) Values ('Neutral'), ('Friendly')");
+
+            sql.ExecuteNonQuery("create table skill(id INTEGER PRIMARY KEY AUTOINCREMENT, rank INTEGER, name VARCHAR[100], description TEXT," +
+                                " cost FLOAT, targetFractionId INTEGER, CONSTRAINT FK_skillFractionTargetId FOREIGN KEY (targetFractionId) REFERENCES fraction(id))");
+            sql.ExecuteNonQuery("create table skilllist(aid INTEGER PRIMARY KEY AUTOINCREMENT, skilllistid INTEGER, skillid INTEGER," +
+                                " CONSTRAINT FK_SkillListSkillId FOREIGN KEY (skillid) REFERENCES skill(id))");
+            sql.ExecuteNonQuery("create table stat(id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR[100], value INTEGER, description TEXT)");
+            sql.ExecuteNonQuery("create table statlist(aid INTEGER PRIMARY KEY AUTOINCREMENT, statlistid INTEGER, statId INTEGER)");
+            sql.ExecuteNonQuery("create table itemtype(id INTEGER PRIMARY KEY AUTOINCREMENT, type VARCHAR[100])");
+            sql.ExecuteNonQuery("create table item(id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR[100], description TEXT, itemtypeid INTEGER," +
+                                " statlistid INTEGER, maxsocket INTEGER, CONSTRAINT FK_ItemType FOREIGN KEY (itemtypeid) REFERENCES itemtype(id)," +
+                                " CONSTRAINT FK_statlistid FOREIGN KEY (statlistid) REFERENCES statlist(statlistid))");
         })
         {
 
