@@ -1,0 +1,40 @@
+﻿Spielerdaten Anfragen, wenn Laden fertig
+Chat
+Maps in server laden um z.B. mobs etc. pfade zu generieren
+
+Database
+
+Fraction(FractionId, Name)
+
+Item(ItemId, Name, Descrption, ItemTypeId)
+
+ItemList(AutoId, ItemListId, ItemId)
+DropList(AutoId, DropListId, ItemId, Chance%)
+
+Entity (EntityId, TextureId, FractionId, SkillListId, EquipmentItemListId, DropListId, Race, Name, Quality, LifePL, Level, LevelRange, RessourceType, MaxRessource, MaxMoveSpeed, MaxAtkSpeed, MaxDamage, MinDamage, )
+EntityMeta(EntityId, metaKey, metaValue)
+
+SkillList(AutoId, SkillListId, SkillId)
+
+Skill(skillId, Rank, Name, Description, Cost, TargetFractionId)
+
+EntityInstance(EntityId, SpawnPos, Level, Life, Ressource, MoveSpeed, AtkSpeed, MaxDamage, MinDamage)
+
+Map(MapId, Name)
+
+
+
+Code
+
+SpawnPos(spawnXYZ, MapId)
+SpawnFixed(Path) : SpawnPos
+SpawnDyn(spawnRadius) : SpawnPos
+
+enum FractionType { Neutral, Aliance, Horde }
+
+enum RessourceType { None, Mana, Wut, Energie }
+
+Ressource()
+Mana():Ressource
+Wut():Ressource
+Energie():Ressource
