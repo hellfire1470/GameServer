@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameData", "GameData\GameDa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileManager", "FileManager\FileManager.csproj", "{54CAB7AE-4BB4-4C97-A495-E0F358B82A90}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Database", "Database\Database.csproj", "{B327FD3C-5772-40B3-8B81-F903B7F5689A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -31,5 +33,9 @@ Global
 		{54CAB7AE-4BB4-4C97-A495-E0F358B82A90}.Debug|x86.Build.0 = Debug|Any CPU
 		{54CAB7AE-4BB4-4C97-A495-E0F358B82A90}.Release|x86.ActiveCfg = Release|Any CPU
 		{54CAB7AE-4BB4-4C97-A495-E0F358B82A90}.Release|x86.Build.0 = Release|Any CPU
+		{B327FD3C-5772-40B3-8B81-F903B7F5689A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B327FD3C-5772-40B3-8B81-F903B7F5689A}.Debug|x86.Build.0 = Debug|Any CPU
+		{B327FD3C-5772-40B3-8B81-F903B7F5689A}.Release|x86.ActiveCfg = Release|Any CPU
+		{B327FD3C-5772-40B3-8B81-F903B7F5689A}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

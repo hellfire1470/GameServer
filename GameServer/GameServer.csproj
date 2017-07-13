@@ -52,6 +52,13 @@
       <Project>{54CAB7AE-4BB4-4C97-A495-E0F358B82A90}</Project>
       <Name>FileManager</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Database\Database.csproj">
+      <Project>{B327FD3C-5772-40B3-8B81-F903B7F5689A}</Project>
+      <Name>Database</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Todo.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
