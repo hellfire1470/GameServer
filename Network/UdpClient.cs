@@ -19,7 +19,6 @@ namespace Network
         {
             _host = host;
             _port = port;
-
         }
 
         public void Connect()
