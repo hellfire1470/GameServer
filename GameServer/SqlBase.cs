@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using GameData;
-using FileManager;
+using Database;
 
 namespace GameServer
 {
@@ -52,7 +52,8 @@ namespace GameServer
 
         public SqlAccountData GetAccount(int id)
         {
-            Dictionary<int, Dictionary<string, string>> results = ExecuteQuery("select id, name, password from account where id = " + id);
+			//todo: sql injection protection
+			Dictionary<int, Dictionary<string, string>> results = ExecuteQuery("select id, name, password from account where id = " + id);
             if (results.Count > 0)
             {
                 return _SqlDataToAccount(results[0]);
@@ -62,7 +63,8 @@ namespace GameServer
 
         public SqlAccountData GetAccount(string name)
         {
-            Dictionary<int, Dictionary<string, string>> results = ExecuteQuery("select id, name, password from account where name = '" + name + "'");
+            //todo: sql injection protection
+			Dictionary<int, Dictionary<string, string>> results = ExecuteQuery("select id, name, password from account where name = '" + name + "'");
             if (results.Count > 0)
             {
                 return _SqlDataToAccount(results[0]);
