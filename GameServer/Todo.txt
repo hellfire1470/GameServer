@@ -1,12 +1,22 @@
-﻿Spielerdaten Anfragen, wenn Laden fertig
+﻿Todo
+
+Spielerdaten Anfragen, wenn Laden fertig
 Chat
 Maps in server laden um z.B. mobs etc. pfade zu generieren
 
 Database
 
-Fraction(FractionId, Name)
+√ Fraction(FractionId, Name)
 
-Item(ItemId, Name, Descrption, ItemTypeId)
+√ Stat(id, name, value, description)
+√ StatList(aid, statListId, statid)
+
+√ ItemType(id, type)
+
+√ Item(ItemId, Name, Descrption, ItemTypeId, StatListId, maxSockets)
+
+ItemInstance(ItemInstanceId, ItemId)
+ItemInstanceMeta(ItemInstanceId, metakey, metavalue)
 
 ItemList(AutoId, ItemListId, ItemId)
 DropList(AutoId, DropListId, ItemId, Chance%)
@@ -14,9 +24,9 @@ DropList(AutoId, DropListId, ItemId, Chance%)
 Entity (EntityId, TextureId, FractionId, SkillListId, EquipmentItemListId, DropListId, Race, Name, Quality, LifePL, Level, LevelRange, RessourceType, MaxRessource, MaxMoveSpeed, MaxAtkSpeed, MaxDamage, MinDamage, )
 EntityMeta(EntityId, metaKey, metaValue)
 
-SkillList(AutoId, SkillListId, SkillId)
+√ SkillList(AutoId, SkillListId, SkillId)
 
-Skill(skillId, Rank, Name, Description, Cost, TargetFractionId)
+√ Skill(skillId, Rank, Name, Description, Cost, TargetFractionId)
 
 EntityInstance(EntityId, SpawnPos, Level, Life, Ressource, MoveSpeed, AtkSpeed, MaxDamage, MinDamage)
 
