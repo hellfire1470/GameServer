@@ -88,11 +88,14 @@ namespace GameServer
             Console.WriteLine(MainClass._accounts.Count + " Clients are connected to the server");
             int logged_in = 0;
             int ingame = 0;
-            foreach(Account account in MainClass._accounts.Values){
-                if(account.Authentificated){
+            foreach (Account account in MainClass._accounts.Values)
+            {
+                if (account.Authentificated)
+                {
                     logged_in++;
                 }
-                if(account.InGame){
+                if (account.InGame)
+                {
                     ingame++;
                 }
             }
@@ -177,7 +180,7 @@ namespace GameServer
         {
 
         });
-#endregion
+        #endregion
     }
 
     public delegate void CmdAction(string[] args);
