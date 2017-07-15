@@ -1,5 +1,11 @@
 ﻿namespace GameData
 {
+
+    public enum RessourceType
+    {
+        None, Mana, Energy, Rage
+    }
+
     public class Location
     {
         public int Map;
