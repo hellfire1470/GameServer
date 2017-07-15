@@ -62,9 +62,10 @@ namespace FileManager
         {
             if (key.Contains("=") || value.Contains("=")) throw new Exception("key or value can not contain '=' char");
 
-            if (_configs[key] != value){
+            if (_configs[key] != value)
+            {
                 _refreshKeysValues = true;
-				_configs[key] = value;   
+                _configs[key] = value;
             }
         }
 
