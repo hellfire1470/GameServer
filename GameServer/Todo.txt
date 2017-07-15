@@ -5,6 +5,9 @@ Chat
 Maps in server laden um z.B. mobs etc. pfade zu generieren
 
 Database
+TODO: Add UNIQUEs etc.
+
+√ charactermeta(aid, characterid, key, value)
 
 √ Fraction(FractionId, Name)
 
@@ -15,25 +18,33 @@ Database
 
 √ Item(ItemId, Name, Descrption, ItemTypeId, StatListId, maxSockets)
 
-ItemInstance(ItemInstanceId, ItemId)
-ItemInstanceMeta(ItemInstanceId, metakey, metavalue)
+√ ItemInstance(ItemInstanceId, ItemId)
+√ ItemInstanceMeta(ItemInstanceId, metakey, metavalue)
 
 ItemList(AutoId, ItemListId, ItemId)
-DropList(AutoId, DropListId, ItemId, Chance%)
+√ DropList(AutoId, DropListId, ItemId, Chance%)
 
-Entity (EntityId, TextureId, FractionId, SkillListId, EquipmentItemListId, DropListId, Race, Name, Quality, LifePL, Level, LevelRange, RessourceType, MaxRessource, MaxMoveSpeed, MaxAtkSpeed, MaxDamage, MinDamage, )
-EntityMeta(EntityId, metaKey, metaValue)
+//*** OUTDATED ***//
+[REMOVED] Race(aid, name) -> Reason: inserted into GameData.Base.cs
+////////////////////
+
+√ Quality(id, quality)
+
+√ Entity (EntityId, TextureId, FractionId, SkillListId, EquipmentItemListId, DropListId, RaceId, Name, Qualityid, LifePL, Level, LevelRange, RessourceType, MaxRessource, MaxMoveSpeed, MaxAtkSpeed, damage, damagerange, expPl)
+√ EntityMeta(EntityId, metaKey, metaValue)
 
 √ SkillList(AutoId, SkillListId, SkillId)
 
 √ Skill(skillId, Rank, Name, Description, Cost, TargetFractionId)
 
-EntityInstance(EntityId, SpawnPos, Level, Life, Ressource, MoveSpeed, AtkSpeed, MaxDamage, MinDamage)
+√ Location(locationId, MapId, x, y, z)
 
-Map(MapId, Name)
+√ EntityInstance(EntityId, locationId, Level, Life, Ressource, MoveSpeed, AtkSpeed, Damage, damageRange)
+
+√ Map(MapId, Name)
 
 
-
+// Check it
 Code
 
 SpawnPos(spawnXYZ, MapId)
