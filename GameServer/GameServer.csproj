@@ -38,6 +38,8 @@
     <Compile Include="Character.cs" />
     <Compile Include="CommandListener.cs" />
     <Compile Include="SqlBase.cs" />
+    <Compile Include="NetworkConverter.cs" />
+    <Compile Include="Manager\MapManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Network\Network.csproj">
@@ -56,9 +58,16 @@
       <Project>{B327FD3C-5772-40B3-8B81-F903B7F5689A}</Project>
       <Name>Database</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Logger\Logger.csproj">
+      <Project>{D46D09BB-25AD-43EC-94A7-FF4E64D7A9D7}</Project>
+      <Name>Logger</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Todo.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Manager\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
