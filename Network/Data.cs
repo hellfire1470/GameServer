@@ -12,13 +12,15 @@ namespace Network
 
         public class Character
         {
+            public Character(){}
             public long Id;
             public string Name;
             public int Level;
-            public Race Race;
-            public Class Class;
+            public RaceType Race;
+            public ClassType Class;
             public long Experience;
             public Location Location;
+            public FractionType Fraction;
         }
     }
 }
