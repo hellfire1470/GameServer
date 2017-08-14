@@ -1,4 +1,6 @@
 ﻿
+using GameData;
+
 namespace Network
 {
     // NetworkHelper Extention
@@ -19,7 +21,7 @@ namespace Network
     {
         public enum PackageType
         {
-            Unknown, Login, Logout, SelectCharacter, GetAccountCharacters
+            Unknown, Login, Logout, SelectCharacter, GetAccountCharacters, CreateCharacter, MoveCharacter
         }
 
         public class Package
@@ -57,6 +59,7 @@ namespace Network
         public class LoginResponse : Response
         {
             public LoginResponse() : base(PackageType.Login) { }
+            public ErrorResult Error;
             public Data.Account Data;
         }
         #endregion
@@ -80,12 +83,12 @@ namespace Network
         public class SelectCharacterRequest : Request
         {
             public SelectCharacterRequest() : base(PackageType.SelectCharacter) { }
-            public long CharacterId;
+            public int CharacterId;
         }
         public class SelectCharacterResponse : Response
         {
             public SelectCharacterResponse() : base(PackageType.SelectCharacter) { }
-            public long CharacterId;
+            public int CharacterId;
         }
         #endregion
 
@@ -101,5 +104,29 @@ namespace Network
             public Data.Character[] Characters;
         }
         #endregion
+
+        #region "MoveCharacter"
+        public class MoveCharacterRequest : Request
+        {
+            public MoveCharacterRequest() : base(PackageType.MoveCharacter) { }
+            public Location NewLocation;
+            public CharacterAnimationType AnimationType;
+        }
+        public class MoveCharacterResponse : Response
+        {
+            public MoveCharacterResponse() : base(PackageType.MoveCharacter) { }
+        }
+        #endregion
+
+        #region "Create Character"
+        public class CreateCharacterRequest : Request {
+            public CreateCharacterRequest() : base(PackageType.CreateCharacter) { }
+            public Data.Character CharacterData;
+        }
+        public class CreateCharacterResponse : Response {
+            public CreateCharacterResponse() : base(PackageType.CreateCharacter) { }
+            public ErrorResult Error;
+        }
+#endregion
     }
 }
