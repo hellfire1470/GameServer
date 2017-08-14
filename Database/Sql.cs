@@ -28,17 +28,40 @@ namespace Database
 				OnCreated(this);
 		}
 
-		public int ExecuteNonQuery(string sql)
+        public long LastInsertId()
+        {
+            SqliteCommand cmd = new SqliteCommand("select last_insert_rowid()", _connection);
+            object scalar = cmd.ExecuteScalar();
+            return scalar == null ? -1 : (long)scalar;
+        }
+
+		public int ExecuteNonQuery(string sql, object[] parameters = null)
 		{
 			SqliteCommand cmd = new SqliteCommand(sql, _connection);
+            if (parameters != null)
+            {
+                int currentParameter = 0;
+                foreach (object param in parameters)
+                {
+                    cmd.Parameters.Add(new SqliteParameter("@" + ++currentParameter, param));
+                }
+            }
 			return cmd.ExecuteNonQuery();
 		}
 
-		public Dictionary<int, Dictionary<string, string>> ExecuteQuery(string sql)
+		public Dictionary<int, Dictionary<string, string>> ExecuteQuery(string sql, object[] parameters = null)
 		{
 			Dictionary<int, Dictionary<string, string>> ret = new Dictionary<int, Dictionary<string, string>>();
 
 			SqliteCommand cmd = new SqliteCommand(sql, _connection);
+            if (parameters != null)
+            {
+				int currentParameter = 0;
+                foreach (object param in parameters)
+                {
+                    cmd.Parameters.Add(new SqliteParameter("@" + ++currentParameter, param));
+                }
+            }
 			SqliteDataReader dr = cmd.ExecuteReader();
 
 			int row = 0;
