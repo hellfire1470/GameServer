@@ -7,9 +7,9 @@ namespace GameServer
     public static class CommandManager
     {
         #region "Quit"
-        public static Cmd Quit = new Cmd(new string[] { "quit" }, (string[] args) =>
+        public static Cmd Quit = new Cmd(new string[] { "quit", "stop", "exit", "close" }, (string[] args) =>
         {
-            Environment.Exit(0);
+            Environment.Stop();
         }, "Closes the server.");
         #endregion
         #region "ChangeName"
@@ -26,9 +26,9 @@ namespace GameServer
                 Console.WriteLine("Name can not be empty");
                 return;
             }
-            Globals.ConfigurationFile.SetValue("name", name);
-            Globals.ConfigurationFile.Apply();
-            Globals.Name = name;
+            Global.ConfigurationFile.SetValue("name", name);
+            Global.ConfigurationFile.Apply();
+            Global.Name = name;
             Console.WriteLine("Servername changed to: " + name);
 
 
@@ -40,9 +40,9 @@ namespace GameServer
             int port = 0;
             if (int.TryParse(args[0], out port) && port >= 0 && port <= 65535)
             {
-                Globals.Port = port;
-                Globals.ConfigurationFile.SetValue("port", port.ToString());
-                Globals.ConfigurationFile.Apply();
+                Global.Port = port;
+                Global.ConfigurationFile.SetValue("port", port.ToString());
+                Global.ConfigurationFile.Apply();
                 Console.WriteLine("Port changed to " + port.ToString());
                 Console.WriteLine("Please restart the server to apply changes");
             }
@@ -85,11 +85,12 @@ namespace GameServer
         #region "Online"
         public static Cmd Online = new Cmd(new string[] { "online" }, (string[] args) =>
         {
-            Console.WriteLine(MainClass._accounts.Count + " Clients are connected to the server");
+            Console.WriteLine(MainClass._dictServerUser.Count + " Clients are connected to the server");
             int logged_in = 0;
             int ingame = 0;
-            foreach (Account account in MainClass._accounts.Values)
+            foreach (ServerUser serverUser in MainClass._dictServerUser.Values)
             {
+                Account account = serverUser.Account;
                 if (account.Authentificated)
                 {
                     logged_in++;
@@ -111,32 +112,11 @@ namespace GameServer
             {
                 if (args[0] == "account")
                 {
-                    string account = args[1];
-                    int id = 0;
-                    SqlAccountData accountData;
-                    if (int.TryParse(account, out id))
-                    {
-                        accountData = Globals.SqlBase.GetAccount(id);
-                    }
-                    else
-                    {
-                        accountData = Globals.SqlBase.GetAccount(account);
-                    }
-                    if (accountData != null)
-                    {
-                        Console.WriteLine("Here is the dataset for " + account);
-                        Console.WriteLine("id".PadRight(20) + accountData.Id.ToString());
-                        Console.WriteLine("name".PadRight(20) + accountData.Username);
-                        Console.WriteLine("password".PadRight(20) + accountData.Password);
-                    }
-                    else
-                    {
-                        Console.WriteLine("No dataset found for " + account);
-                    }
+                    Account.Action(new string[]{ "show", args[1] });
                 }
-                if (args[0] == "characters")
+                if (args[0] == "character")
                 {
-
+                    Character.Action(new string[] { "show", args[1] });
                 }
             }
         });
@@ -155,7 +135,7 @@ namespace GameServer
                         string password = args[2];
                         if (username.Trim(' ') != "" && password.Trim(' ') != "")
                         {
-                            if (Globals.SqlBase.CreateAccount(username, password))
+                            if (SqlAccount.Create(username, password))
                             {
                                 Console.WriteLine("Account " + username + " successfully created");
                             }
@@ -171,9 +151,82 @@ namespace GameServer
                         Console.WriteLine("usage: account create <username> <password>");
                     }
                 }
+                else if(args[0] == "show")
+                {
+					string accountId = args[1];
+					int id = 0;
+                    IAccount account;
+					if (int.TryParse(accountId, out id))
+					{
+                        account = SqlAccount.Load(id);
+					}
+					else
+					{
+                        account = SqlAccount.Load(accountId);
+					}
+					if (account != null)
+					{
+						Console.WriteLine("Here is the dataset for " + accountId);
+                        Console.WriteLine("id".PadRight(20) + account.Id.ToString());
+						Console.WriteLine("name".PadRight(20) + account.Username);
+						Console.WriteLine("password".PadRight(20) + account.Password);
+						Console.WriteLine(" ### Characters ### ");
+                        foreach (SqlCharacter character in SqlAccount.GetCharacters(account.Id))
+						{
+                            Console.WriteLine(character.Id + " - " + character.Name);
+						}
+					}
+					else
+					{
+						Console.WriteLine("No dataset found for " + accountId);
+					}
+                }
             }
         });
         #endregion
+
+        #region "character"
+        public static Cmd Character = new Cmd(new string[] { "character" }, (string[] args) => 
+        {
+            if(args.Length > 1){
+                if(args[0] == "show"){
+					int id = 0;
+					if (int.TryParse(args[1], out id))
+					{
+						SqlCharacter character = SqlCharacter.Load(id);
+						if (character != null)
+						{
+							Console.WriteLine("Here is the dataset for character " + id);
+							Console.WriteLine("Name".PadRight(20) + character.Name);
+							Console.WriteLine("Level".PadRight(20) + character.Level);
+							Console.WriteLine("Exp".PadRight(20) + character.Exp);
+							Console.WriteLine("Race".PadRight(20) + character.Race.ToString());
+							Console.WriteLine("Class".PadRight(20) + character.Class.ToString());
+							Console.WriteLine("Fraction".PadRight(20) + character.Fraction.ToString());
+							Console.WriteLine("Map".PadRight(20) + character.Location.Map.Name);
+							Console.WriteLine(" ### META ### ");
+							foreach (Dictionary<string, string> meta in character.Meta.Values)
+							{
+								Console.WriteLine(meta["key"].PadRight(20) + meta["value"]);
+							}
+							Console.WriteLine(" ### Account ### ");
+							Console.WriteLine("Id".PadRight(20) + character.AccountId);
+                            Console.WriteLine("Username".PadRight(20) + SqlAccount.Load(character.AccountId).Username);
+						}
+						else
+						{
+							Console.WriteLine("No dataset found for character " + id);
+						}
+					}
+					else
+					{
+						Console.WriteLine("Wrong usage: show character <id>");
+					}
+                }
+            }
+        });
+        #endregion
+
 
         #region "stats"
         public static Cmd Stats = new Cmd(new string[] { "stats" }, (string[] args) =>
