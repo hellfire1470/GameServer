@@ -4,28 +4,28 @@
     {
         UnknownError, Success, WrongData, InvalidGameKey, Banned, CharacterLimit, InvalidName, NameExists
     }
- 
-	public enum EntityQuality
-	{
-		// Important: do not change sorting order
-		Normal, Rare, Elite, Boss, Legendary
-	}
-	public enum ItemQuality
-	{
-		// Important: do not change sorting order
-		Useless, Normal, Magic, Rare, Epic, Legendary
-	}
-	public enum ItemType
-	{
-		// Important: do not change sorting order
-		Helmet, Shoulder, Chest
-	}
 
-	public enum RessourceType
-	{
-		// Important: do not change sorting order
-		None, Mana, Energy, Rage
-	}
+    public enum EntityQuality
+    {
+        // Important: do not change sorting order
+        Normal, Rare, Elite, Boss, Legendary
+    }
+    public enum ItemQuality
+    {
+        // Important: do not change sorting order
+        Useless, Normal, Magic, Rare, Epic, Legendary
+    }
+    public enum ItemType
+    {
+        // Important: do not change sorting order
+        Helmet, Shoulder, Chest
+    }
+
+    public enum RessourceType
+    {
+        // Important: do not change sorting order
+        None, Mana, Energy, Rage
+    }
 
     public enum StatType
     {
@@ -46,7 +46,7 @@
 
     public class Location
     {
-        public Location(){}
+        public Location() { }
         public Map Map { get; set; }
         public float CoordX { get; set; }
         public float CoordY { get; set; }
@@ -69,12 +69,12 @@
     public enum ClassType
     {
         // Important: do not change sorting order
-		Mage, Warrior, Priest, Rouge
+        Mage, Warrior, Priest, Rouge
     }
 
     public enum RaceType
     {
-		// Important: do not change sorting order
-		Troll, Orc, Human, Goblin
+        // Important: do not change sorting order
+        Troll, Orc, Human, Goblin
     }
 }

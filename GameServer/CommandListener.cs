@@ -112,7 +112,7 @@ namespace GameServer
             {
                 if (args[0] == "account")
                 {
-                    Account.Action(new string[]{ "show", args[1] });
+                    Account.Action(new string[] { "show", args[1] });
                 }
                 if (args[0] == "character")
                 {
@@ -151,77 +151,79 @@ namespace GameServer
                         Console.WriteLine("usage: account create <username> <password>");
                     }
                 }
-                else if(args[0] == "show")
+                else if (args[0] == "show")
                 {
-					string accountId = args[1];
-					int id = 0;
+                    string accountId = args[1];
+                    int id = 0;
                     IAccount account;
-					if (int.TryParse(accountId, out id))
-					{
+                    if (int.TryParse(accountId, out id))
+                    {
                         account = SqlAccount.Load(id);
-					}
-					else
-					{
+                    }
+                    else
+                    {
                         account = SqlAccount.Load(accountId);
-					}
-					if (account != null)
-					{
-						Console.WriteLine("Here is the dataset for " + accountId);
+                    }
+                    if (account != null)
+                    {
+                        Console.WriteLine("Here is the dataset for " + accountId);
                         Console.WriteLine("id".PadRight(20) + account.Id.ToString());
-						Console.WriteLine("name".PadRight(20) + account.Username);
-						Console.WriteLine("password".PadRight(20) + account.Password);
-						Console.WriteLine(" ### Characters ### ");
+                        Console.WriteLine("name".PadRight(20) + account.Username);
+                        Console.WriteLine("password".PadRight(20) + account.Password);
+                        Console.WriteLine(" ### Characters ### ");
                         foreach (SqlCharacter character in SqlAccount.GetCharacters(account.Id))
-						{
+                        {
                             Console.WriteLine(character.Id + " - " + character.Name);
-						}
-					}
-					else
-					{
-						Console.WriteLine("No dataset found for " + accountId);
-					}
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("No dataset found for " + accountId);
+                    }
                 }
             }
         });
         #endregion
 
         #region "character"
-        public static Cmd Character = new Cmd(new string[] { "character" }, (string[] args) => 
+        public static Cmd Character = new Cmd(new string[] { "character" }, (string[] args) =>
         {
-            if(args.Length > 1){
-                if(args[0] == "show"){
-					int id = 0;
-					if (int.TryParse(args[1], out id))
-					{
-						SqlCharacter character = SqlCharacter.Load(id);
-						if (character != null)
-						{
-							Console.WriteLine("Here is the dataset for character " + id);
-							Console.WriteLine("Name".PadRight(20) + character.Name);
-							Console.WriteLine("Level".PadRight(20) + character.Level);
-							Console.WriteLine("Exp".PadRight(20) + character.Exp);
-							Console.WriteLine("Race".PadRight(20) + character.Race.ToString());
-							Console.WriteLine("Class".PadRight(20) + character.Class.ToString());
-							Console.WriteLine("Fraction".PadRight(20) + character.Fraction.ToString());
-							Console.WriteLine("Map".PadRight(20) + character.Location.Map.Name);
-							Console.WriteLine(" ### META ### ");
-							foreach (Dictionary<string, string> meta in character.Meta.Values)
-							{
-								Console.WriteLine(meta["key"].PadRight(20) + meta["value"]);
-							}
-							Console.WriteLine(" ### Account ### ");
-							Console.WriteLine("Id".PadRight(20) + character.AccountId);
+            if (args.Length > 1)
+            {
+                if (args[0] == "show")
+                {
+                    int id = 0;
+                    if (int.TryParse(args[1], out id))
+                    {
+                        SqlCharacter character = SqlCharacter.Load(id);
+                        if (character != null)
+                        {
+                            Console.WriteLine("Here is the dataset for character " + id);
+                            Console.WriteLine("Name".PadRight(20) + character.Name);
+                            Console.WriteLine("Level".PadRight(20) + character.Level);
+                            Console.WriteLine("Exp".PadRight(20) + character.Exp);
+                            Console.WriteLine("Race".PadRight(20) + character.Race.ToString());
+                            Console.WriteLine("Class".PadRight(20) + character.Class.ToString());
+                            Console.WriteLine("Fraction".PadRight(20) + character.Fraction.ToString());
+                            Console.WriteLine("Map".PadRight(20) + character.Location.Map.Name);
+                            Console.WriteLine(" ### META ### ");
+                            foreach (Dictionary<string, string> meta in character.Meta.Values)
+                            {
+                                Console.WriteLine(meta["key"].PadRight(20) + meta["value"]);
+                            }
+                            Console.WriteLine(" ### Account ### ");
+                            Console.WriteLine("Id".PadRight(20) + character.AccountId);
                             Console.WriteLine("Username".PadRight(20) + SqlAccount.Load(character.AccountId).Username);
-						}
-						else
-						{
-							Console.WriteLine("No dataset found for character " + id);
-						}
-					}
-					else
-					{
-						Console.WriteLine("Wrong usage: show character <id>");
-					}
+                        }
+                        else
+                        {
+                            Console.WriteLine("No dataset found for character " + id);
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Wrong usage: show character <id>");
+                    }
                 }
             }
         });

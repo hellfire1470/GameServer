@@ -13,15 +13,17 @@ public static class MapManager
         return null;
     }
 
-    public static void AddMap(Map map){
+    public static void AddMap(Map map)
+    {
         _maps[map.Id] = map;
     }
 
-    public static void LoadMaps(SQL sql){
+    public static void LoadMaps(SQL sql)
+    {
         Dictionary<int, Dictionary<string, string>> maps = sql.ExecuteQuery("select * from map");
         foreach (Dictionary<string, string> map in maps.Values)
         {
-            AddMap(new Map(){ Id = int.Parse(map["id"]), Name = map["name"]});
+            AddMap(new Map() { Id = int.Parse(map["id"]), Name = map["name"] });
         }
     }
 }

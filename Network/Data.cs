@@ -12,7 +12,7 @@ namespace Network
 
         public class Character
         {
-            public Character(){}
+            public Character() { }
             public long Id;
             public string Name;
             public int Level;

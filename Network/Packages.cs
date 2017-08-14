@@ -119,14 +119,16 @@ namespace Network
         #endregion
 
         #region "Create Character"
-        public class CreateCharacterRequest : Request {
+        public class CreateCharacterRequest : Request
+        {
             public CreateCharacterRequest() : base(PackageType.CreateCharacter) { }
             public Data.Character CharacterData;
         }
-        public class CreateCharacterResponse : Response {
+        public class CreateCharacterResponse : Response
+        {
             public CreateCharacterResponse() : base(PackageType.CreateCharacter) { }
             public ErrorResult Error;
         }
-#endregion
+        #endregion
     }
 }

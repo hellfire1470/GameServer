@@ -12,23 +12,23 @@ namespace GameServer
         private static Dictionary<int, IAccount> AccountsId = new Dictionary<int, IAccount>();
         private static Dictionary<string, IAccount> AccountsName = new Dictionary<string, IAccount>();
 
-		private int _id;
-		private string _username;
-		private string _password;
-		private int _maxCharacters;
-		private string _gameKey;
-		private bool _banned;
+        private int _id;
+        private string _username;
+        private string _password;
+        private int _maxCharacters;
+        private string _gameKey;
+        private bool _banned;
 
-		public int Id { get { return _id; } private set { _id = value; } }
-		public string Username { get { return _username; } private set { _username = value; } }
-		public string Password { get { return _password; } private set { _password = value; } }
-		public int MaxCharacters { get { return _maxCharacters; } private set { _maxCharacters = value; } }
-		public string GameKey { get { return _gameKey; } private set { _gameKey = value; } }
-		public bool Banned { get { return _banned; } private set { _banned = value; } }
+        public int Id { get { return _id; } private set { _id = value; } }
+        public string Username { get { return _username; } private set { _username = value; } }
+        public string Password { get { return _password; } private set { _password = value; } }
+        public int MaxCharacters { get { return _maxCharacters; } private set { _maxCharacters = value; } }
+        public string GameKey { get { return _gameKey; } private set { _gameKey = value; } }
+        public bool Banned { get { return _banned; } private set { _banned = value; } }
 
         public static string HashPassword(string username, string password)
         {
-            byte[] byteHash = SHA512.Create().ComputeHash(System.Text.Encoding.UTF8.GetBytes(username+password));
+            byte[] byteHash = SHA512.Create().ComputeHash(System.Text.Encoding.UTF8.GetBytes(username + password));
             return Convert.ToBase64String(byteHash);
         }
 
@@ -37,7 +37,7 @@ namespace GameServer
             //Filter illegal characters
             if (name.Trim() == "" || password.Trim() == "") return false;
 
-            if (Global.SqlBase.ExecuteNonQuery("insert into account(name, password) values(@1, @2)", new string[]{ name, HashPassword(name, password) }) == 1)
+            if (Global.SqlBase.ExecuteNonQuery("insert into account(name, password) values(@1, @2)", new string[] { name, HashPassword(name, password) }) == 1)
             {
                 return true;
             }
@@ -57,12 +57,13 @@ namespace GameServer
                 //return AccountsId[id];
             }
 
-            Dictionary<int, Dictionary<string, string>> results = Global.SqlBase.ExecuteQuery("select id, name, password, gamekey, maxcharacters, banned from account where id = @1", new object[]{ id });
+            Dictionary<int, Dictionary<string, string>> results = Global.SqlBase.ExecuteQuery("select id, name, password, gamekey, maxcharacters, banned from account where id = @1", new object[] { id });
             if (results.Count > 0)
             {
-                IAccount iAccount = new SqlAccount{
-                    Id = int.Parse(results[0]["id"]), 
-                    Username = results[0]["name"], 
+                IAccount iAccount = new SqlAccount
+                {
+                    Id = int.Parse(results[0]["id"]),
+                    Username = results[0]["name"],
                     Password = results[0]["password"],
                     GameKey = results[0]["gamekey"],
                     MaxCharacters = int.Parse(results[0]["maxcharacters"]),
@@ -81,7 +82,7 @@ namespace GameServer
                 //return AccountsName[name];
             }
 
-            Dictionary<int, Dictionary<string, string>> results = Global.SqlBase.ExecuteQuery("select id from account where name = @1", new string[]{ name });
+            Dictionary<int, Dictionary<string, string>> results = Global.SqlBase.ExecuteQuery("select id from account where name = @1", new string[] { name });
             if (results.Count > 0)
             {
                 return Load(int.Parse(results[0]["id"]));
@@ -101,7 +102,8 @@ namespace GameServer
             return characters;
         }
 
-        public static List<int> GetCharacterIds(int accountId){
+        public static List<int> GetCharacterIds(int accountId)
+        {
             return Global.SqlBase.GetCharacterIds(accountId);
         }
     }
@@ -143,54 +145,56 @@ namespace GameServer
         public static SqlCharacter Load(int id)
         {
             if (Characters.ContainsKey(id))
-			{
-				//return Characters[id];
-			}
+            {
+                //return Characters[id];
+            }
 
-            Dictionary<int, Dictionary<string, string>> character = Global.SqlBase.ExecuteQuery("SELECT id, accountid, class, level, fraction, exp, name, race, locationid FROM character WHERE id = @1", new object[]{ id });
+            Dictionary<int, Dictionary<string, string>> character = Global.SqlBase.ExecuteQuery("SELECT id, accountid, class, level, fraction, exp, name, race, locationid FROM character WHERE id = @1", new object[] { id });
 
-			if (character.Count == 1)
-			{
-                Dictionary<string, string> locationData = Global.SqlBase.ExecuteQuery("SELECT mapid, x, y, z, name FROM location JOIN map ON map.id = mapid WHERE location.id = @1", new object[]{ character[0]["locationid"] })[0];
+            if (character.Count == 1)
+            {
+                Dictionary<string, string> locationData = Global.SqlBase.ExecuteQuery("SELECT mapid, x, y, z, name FROM location JOIN map ON map.id = mapid WHERE location.id = @1", new object[] { character[0]["locationid"] })[0];
                 Dictionary<int, Dictionary<string, string>> characterMeta = Global.SqlBase.ExecuteQuery("SELECT key, value FROM charactermeta WHERE characterid = @1", new object[] { character[0]["id"] });
-				if (locationData == null)
-				{
-					return null;
-				}
-				SqlCharacter sqlCharacter = new SqlCharacter(int.Parse(character[0]["id"]), int.Parse(character[0]["accountid"]), character[0]["name"],
-									   (ClassType)int.Parse(character[0]["class"]), (RaceType)int.Parse(character[0]["race"]),
-									   int.Parse(character[0]["level"]), int.Parse(character[0]["exp"]),
+                if (locationData == null)
+                {
+                    return null;
+                }
+                SqlCharacter sqlCharacter = new SqlCharacter(int.Parse(character[0]["id"]), int.Parse(character[0]["accountid"]), character[0]["name"],
+                                       (ClassType)int.Parse(character[0]["class"]), (RaceType)int.Parse(character[0]["race"]),
+                                       int.Parse(character[0]["level"]), int.Parse(character[0]["exp"]),
                                                              new Location(MapManager.GetMap(int.Parse(locationData["mapid"])), int.Parse(locationData["x"]), int.Parse(locationData["y"]), int.Parse(locationData["z"])),
-									   (FractionType)int.Parse(character[0]["fraction"]), characterMeta);
+                                       (FractionType)int.Parse(character[0]["fraction"]), characterMeta);
                 //Insert(sqlCharacter);
                 return sqlCharacter;
-			}
-			return null;
+            }
+            return null;
         }
 
         public static SqlCharacter Load(string name)
         {
             // todo: sql injection protection
-            Dictionary<int, Dictionary<string, string>> characters = Global.SqlBase.ExecuteQuery("SELECT id FROM character WHERE name = @1", new string[]{ name });
-            if(characters.Count == 1){
+            Dictionary<int, Dictionary<string, string>> characters = Global.SqlBase.ExecuteQuery("SELECT id FROM character WHERE name = @1", new string[] { name });
+            if (characters.Count == 1)
+            {
                 return Load(int.Parse(characters[0]["id"]));
             }
             return null;
         }
 
-        public static ErrorResult Create(IAccount account, string name, ClassType cl, RaceType race, int level, int exp, Location location, FractionType fraction){
+        public static ErrorResult Create(IAccount account, string name, ClassType cl, RaceType race, int level, int exp, Location location, FractionType fraction)
+        {
             if (name.Trim() == "") return ErrorResult.InvalidName;
 
             if (SqlAccount.GetCharacterIds(account.Id).Count >= account.MaxCharacters)
             {
                 return ErrorResult.CharacterLimit;
             }
-            Global.SqlBase.ExecuteQuery("INSERT INTO location(mapid, x, y, z) VALUES (@1, @2, @3, @4)", 
-                                        new object[]{ location.Map.Id, location.CoordX, location.CoordY, location.CoordZ });
+            Global.SqlBase.ExecuteQuery("INSERT INTO location(mapid, x, y, z) VALUES (@1, @2, @3, @4)",
+                                        new object[] { location.Map.Id, location.CoordX, location.CoordY, location.CoordZ });
             long locationId = Global.SqlBase.LastInsertId();
             return Global.SqlBase.ExecuteNonQuery(
                 "INSERT INTO character(accountid, name, class, race, level, exp, locationid, fraction) " +
-                "VALUES (@1, @2, @3, @4, @5, @6, @7, @8)", new object[]{ account.Id, name, cl, race, level, exp, locationId, fraction }
+                "VALUES (@1, @2, @3, @4, @5, @6, @7, @8)", new object[] { account.Id, name, cl, race, level, exp, locationId, fraction }
             ) == 1 ? ErrorResult.Success : ErrorResult.UnknownError;
         }
     }
@@ -353,7 +357,7 @@ namespace GameServer
             int rows = ExecuteQuery("SELECT name FROM sqlite_master WHERE type='table';").Count;
             if (rows != 16)
             {
-                Environment.Stop("Database corrupted! Please remove "+ Settings.database_file + " file and restart the server");
+                Environment.Stop("Database corrupted! Please remove " + Settings.database_file + " file and restart the server");
                 return;
             }
             Logger.Log("Done");
@@ -364,7 +368,7 @@ namespace GameServer
 
         public List<int> GetCharacterIds(int accountId)
         {
-            Dictionary<int, Dictionary<string, string>> characters = ExecuteQuery("SELECT id FROM character WHERE accountid = @1", new object[]{ accountId });
+            Dictionary<int, Dictionary<string, string>> characters = ExecuteQuery("SELECT id FROM character WHERE accountid = @1", new object[] { accountId });
             List<int> characterIds = new List<int>();
             foreach (Dictionary<string, string> character in characters.Values)
             {

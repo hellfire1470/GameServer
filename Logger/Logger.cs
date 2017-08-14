@@ -6,7 +6,8 @@ public static class Logger
 
     private static string GetHeader()
     {
-        if(_useHeader){
+        if (_useHeader)
+        {
             return "[" + DateTime.Now.Hour.ToString("D2") + ":" + DateTime.Now.Minute.ToString("D2") + ":" + DateTime.Now.Second.ToString("D2") + ":" + DateTime.Now.Millisecond.ToString("D3") + "] ";
         }
         return "";
@@ -16,15 +17,15 @@ public static class Logger
     {
         str = str.Insert(0, GetHeader());
 
-		if (keepLine)
-		{
-			_useHeader = false;
-		}
-		else
-		{
-			_useHeader = true;
-			str += "\n";
-		}
+        if (keepLine)
+        {
+            _useHeader = false;
+        }
+        else
+        {
+            _useHeader = true;
+            str += "\n";
+        }
 
         Console.Write(str);
     }
@@ -32,7 +33,7 @@ public static class Logger
     public static void Error(string str)
     {
         Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine(GetHeader()+ "[Error] " + str);
+        Console.WriteLine(GetHeader() + "[Error] " + str);
 
         Console.ResetColor();
     }
