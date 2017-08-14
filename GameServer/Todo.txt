@@ -7,14 +7,11 @@ Maps in server laden um z.B. mobs etc. pfade zu generieren
 Database
 TODO: Add UNIQUEs etc.
 
+TODO: implement database in Code
+
 √ charactermeta(aid, characterid, key, value)
 
-√ Fraction(FractionId, Name)
-
-√ Stat(id, name, value, description)
-√ StatList(aid, statListId, statid)
-
-√ ItemType(id, type)
+√ [UPDATED] StatList(aid, statListId, statid, value)
 
 √ Item(ItemId, Name, Descrption, ItemTypeId, StatListId, maxSockets)
 
@@ -25,12 +22,15 @@ ItemList(AutoId, ItemListId, ItemId)
 √ DropList(AutoId, DropListId, ItemId, Chance%)
 
 //*** OUTDATED ***//
-[REMOVED] Race(aid, name) -> Reason: inserted into GameData.Base.cs
+[REMOVED] Stat(id, name, value, description) -> Reson: inserted into GameData.cs
+[REMOVED] Fraction(FractionId, Name) -> Reason: inserted into GameData.cs
+[REMOVED] Race(aid, name) -> Reason: inserted into GameData.cs
+[REMOVED] ItemQuality(id, quality) -> Reason: inserted into GameData.Quality
+[REMOVED] EntityQuality(id, quality) -> Reason: inserted into GameData.Quality
+[REMOVED] ItemType(id, type) -> Reason: inseted into GameData.Types
 ////////////////////
 
-√ Quality(id, quality)
-
-√ Entity (EntityId, TextureId, FractionId, SkillListId, EquipmentItemListId, DropListId, RaceId, Name, Qualityid, LifePL, Level, LevelRange, RessourceType, MaxRessource, MaxMoveSpeed, MaxAtkSpeed, damage, damagerange, expPl)
+√ Entity (EntityId, TextureId, FractionId, SkillListId, EquipmentItemListId, DropListId, RaceId, Name, Qualityid, LifeBase, LifePL, Level, LevelRange, RessourceType, MaxRessource, MaxMoveSpeed, MaxAtkSpeed, damage, damagerange, expPl)
 √ EntityMeta(EntityId, metaKey, metaValue)
 
 √ SkillList(AutoId, SkillListId, SkillId)
