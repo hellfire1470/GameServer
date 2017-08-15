@@ -34,17 +34,20 @@
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="CommandListener.cs" />
-    <Compile Include="NetworkConverter.cs" />
     <Compile Include="Manager\MapManager.cs" />
     <Compile Include="Environment.cs" />
     <Compile Include="Server\User.cs" />
-    <Compile Include="Account.cs" />
     <Compile Include="Server\Server.cs" />
     <Compile Include="SQL\SqlBase.cs" />
     <Compile Include="SQL\Base.cs" />
     <Compile Include="SQL\Account.cs" />
     <Compile Include="SQL\Character.cs" />
+    <Compile Include="IO\CommandManager.cs" />
+    <Compile Include="IO\Command.cs" />
+    <Compile Include="BasicCommands.cs" />
+    <Compile Include="Network\Converter.cs" />
+    <Compile Include="Server\Account.cs" />
+    <Compile Include="IO\Logger.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Network\Network.csproj">
@@ -63,10 +66,6 @@
       <Project>{B327FD3C-5772-40B3-8B81-F903B7F5689A}</Project>
       <Name>Database</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Logger\Logger.csproj">
-      <Project>{D46D09BB-25AD-43EC-94A7-FF4E64D7A9D7}</Project>
-      <Name>Logger</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Todo.txt" />
@@ -75,6 +74,8 @@
     <Folder Include="Manager\" />
     <Folder Include="Server\" />
     <Folder Include="SQL\" />
+    <Folder Include="IO\" />
+    <Folder Include="Network\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

@@ -1,8 +1,8 @@
 ﻿using GameData.Network;
 
-namespace GameServer
+namespace GameServer.Network
 {
-    public static class NetworkConverter
+    public static class Converter
     {
         public static Character ConvertCharacter(SQL.Character character)
         {

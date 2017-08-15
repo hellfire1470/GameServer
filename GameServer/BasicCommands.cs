@@ -1,10 +1,10 @@
 ﻿using System;
+using GameServer.IO;
 using System.Collections.Generic;
 
 namespace GameServer
 {
-
-    public static class CommandManager
+    public static class BasicCommands
     {
         #region "Quit"
         public static Cmd Quit = new Cmd(new string[] { "quit", "stop", "exit", "close" }, (string[] args) =>
@@ -70,7 +70,7 @@ namespace GameServer
                 Console.WriteLine("Type 'help <command>' to show information about the command");
             }
 
-            foreach (Cmd cmd in CommandListener.Commands)
+            foreach (Cmd cmd in CommandManager.Commands)
             {
                 if (specificCmd != "" && !cmd.Keywords.Contains(specificCmd)) { continue; }
 
@@ -104,7 +104,6 @@ namespace GameServer
             Console.WriteLine(ingame + " Accounts are ingame");
         }, "Show online players");
         #endregion
-
         #region "show"
         public static Cmd Show = new Cmd(new string[] { "show" }, (string[] args) =>
         {
@@ -121,7 +120,6 @@ namespace GameServer
             }
         });
         #endregion
-
         #region "account"
         public static Cmd Account = new Cmd(new string[] { "account" }, (string[] args) =>
         {
@@ -184,7 +182,6 @@ namespace GameServer
             }
         });
         #endregion
-
         #region "character"
         public static Cmd Character = new Cmd(new string[] { "character" }, (string[] args) =>
         {
@@ -228,61 +225,11 @@ namespace GameServer
             }
         });
         #endregion
-
-
         #region "stats"
         public static Cmd Stats = new Cmd(new string[] { "stats" }, (string[] args) =>
         {
 
         });
         #endregion
-    }
-
-    public delegate void CmdAction(string[] args);
-
-    public class Cmd
-    {
-        public List<string> Keywords { get; private set; }
-        public CmdAction Action { get; private set; }
-        public string Description { get; private set; }
-        public Cmd(string[] keywords, CmdAction action, string description = "")
-        {
-            Keywords = new List<string>();
-            foreach (string keyword in keywords)
-            {
-                Keywords.Add(keyword);
-            }
-            Action = action;
-            Description = description;
-        }
-    }
-
-    public static class CommandListener
-    {
-        private static readonly List<Cmd> _commands = new List<Cmd>();
-        public static List<Cmd> Commands { get { return _commands; } }
-
-        public static void AddCommand(Cmd cmd)
-        {
-            _commands.Add(cmd);
-        }
-
-        public static void HandleCommand(string input)
-        {
-            string[] args = input.Split(' ');
-            string inputKeyword = args[0];
-
-            string[] cmdArgs = new string[args.Length - 1];
-            Array.Copy(args, 1, cmdArgs, 0, cmdArgs.Length);
-            foreach (Cmd cmd in _commands)
-            {
-                if (cmd.Keywords.Contains(inputKeyword))
-                {
-                    cmd.Action(cmdArgs);
-                    return;
-                }
-            }
-            Console.WriteLine("Command '" + inputKeyword + "' not found.");
-        }
     }
 }

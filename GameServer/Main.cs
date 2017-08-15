@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using FileManager;
+using GameServer.IO;
 
 namespace GameServer
 {
@@ -70,7 +71,7 @@ namespace GameServer
                 string input = Console.ReadLine();
                 try
                 {
-                    CommandListener.HandleCommand(input);
+                    CommandManager.HandleCommand(input);
                 }
                 catch (Exception ex)
                 {
@@ -117,14 +118,14 @@ namespace GameServer
         public static void SetupCommands()
         {
             Logger.Log("Setup commands ... ", true);
-            CommandListener.AddCommand(CommandManager.Quit);
-            CommandListener.AddCommand(CommandManager.ChangeName);
-            CommandListener.AddCommand(CommandManager.Online);
-            CommandListener.AddCommand(CommandManager.ChangePort);
-            CommandListener.AddCommand(CommandManager.Help);
-            CommandListener.AddCommand(CommandManager.Show);
-            CommandListener.AddCommand(CommandManager.Account);
-            CommandListener.AddCommand(CommandManager.Character);
+            CommandManager.AddCommand(BasicCommands.Quit);
+            CommandManager.AddCommand(BasicCommands.ChangeName);
+            CommandManager.AddCommand(BasicCommands.Online);
+            CommandManager.AddCommand(BasicCommands.ChangePort);
+            CommandManager.AddCommand(BasicCommands.Help);
+            CommandManager.AddCommand(BasicCommands.Show);
+            CommandManager.AddCommand(BasicCommands.Account);
+            CommandManager.AddCommand(BasicCommands.Character);
             Logger.Log("Done");
         }
 

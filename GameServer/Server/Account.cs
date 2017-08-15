@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using GameData;
 using GameData.Network;
+using GameServer.Network;
 
 namespace GameServer
 {
@@ -115,7 +116,7 @@ namespace GameServer
             Character[] networkCharacters = new Character[characterIds.Count];
             for (int i = 0; i < characterIds.Count; i++)
             {
-                networkCharacters[i] = NetworkConverter.ConvertCharacter(SQL.Character.Load(characterIds[i]));
+                networkCharacters[i] = Converter.ConvertCharacter(SQL.Character.Load(characterIds[i]));
             }
             return networkCharacters;
         }
