@@ -34,6 +34,7 @@ namespace GameServer
 
         public static void DisableLogging()
         {
+
             Logger.LogToFile = false;
         }
     }
