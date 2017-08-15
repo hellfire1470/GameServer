@@ -88,7 +88,7 @@ namespace GameServer
             Console.WriteLine(MainClass.Server.ServerUser.Count + " Clients are connected to the server");
             int logged_in = 0;
             int ingame = 0;
-            foreach (Server.User serverUser in MainClass.Server.ServerUser.Values)
+            foreach (Server.Connection serverUser in MainClass.Server.ServerUser.Values)
             {
                 Server.Account account = serverUser.Account;
                 if (account.Authentificated)

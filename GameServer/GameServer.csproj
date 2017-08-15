@@ -48,6 +48,9 @@
     <Compile Include="Network\Converter.cs" />
     <Compile Include="Server\Account.cs" />
     <Compile Include="IO\Logger.cs" />
+    <Compile Include="Network\PackageManager.cs" />
+    <Compile Include="Network\Package.cs" />
+    <Compile Include="Server\PackageFunctions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Network\Network.csproj">

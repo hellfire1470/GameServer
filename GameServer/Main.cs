@@ -84,7 +84,7 @@ namespace GameServer
         {
             DateTime startTime = DateTime.Now;
 
-            GameServer.Server.User.TimeoutTimeInMinutes = Settings.timeout_in_minutes;
+            GameServer.Server.Connection.TimeoutTimeInMinutes = Settings.timeout_in_minutes;
 
             Settings.SetLogDirectory("logs/");
             Settings.SetLogFile(DateTime.Now.ToString("u") + ".log");

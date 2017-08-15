@@ -74,7 +74,7 @@ namespace GameServer.Server
         public List<int> GetCharacterIdList()
         {
             if (Authentificated)
-                return SQL.AccountData.GetCharacterIds(Id);
+                return GetCharacterIds(Id);
             return new List<int>();
         }
 
