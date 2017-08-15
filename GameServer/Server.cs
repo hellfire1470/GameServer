@@ -52,7 +52,8 @@ namespace GameServer
     {
         public const string configuration_file = "config.ini";
         public const string database_file = "data.sqlite";
-
+        public static string log_dir = "logs/";
+        public static string log_file = DateTime.Now.ToString("yy.MM.dd_HHmmss") + ".log";
         public const double timeout_in_minutes = 15d;
     }
 
@@ -115,13 +116,17 @@ namespace GameServer
         public static void StartupServer(string[] args)
         {
             DateTime startTime = DateTime.Now;
-            Logger.Log("Starting Server");
+
+			Logger.LogDir = Settings.log_dir;
+            Logger.LogFile = Settings.log_file;
+            Logger.LogToFile = true;
+
+			// Configuration File
+			LoadConfigurationFile();
 
             // Database
             LoadDatabaseFile();
 
-            // Configuration File
-            LoadConfigurationFile();
 
             ApplyStartupArgs(args);
 
@@ -162,8 +167,6 @@ namespace GameServer
 
         public static void LoadConfigurationFile()
         {
-            Logger.Log("Loading Configuration File ... ", true);
-
             Global.ConfigurationFile = new Config(Settings.configuration_file);
 
             foreach (Config.KeyValue keyvalue in Global.ConfigurationFile.GetConfigs())
@@ -185,9 +188,19 @@ namespace GameServer
                             }
                         }
                         break;
+                    case "log_dir":
+                        Settings.log_dir = keyvalue.Value;
+                        Logger.LogDir = keyvalue.Value;
+                        break;
+                    case "log_file":
+                        Settings.log_file = keyvalue.Value;
+                        Logger.LogFile = keyvalue.Value;
+                        break;
+                    case "log_to_file":
+                        Logger.LogToFile = bool.Parse(keyvalue.Value);
+                        break;
                 }
             }
-            Logger.Log("Done");
         }
 
         public static void ApplyStartupArgs(string[] args)
