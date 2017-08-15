@@ -35,15 +35,12 @@ namespace Network
 
         protected virtual void OnDataReceived(byte[] data)
         {
-            if (DataReceived != null)
-            {
 
-                DataReceived(this, new NetworkReceiveEventArgs()
-                {
-                    Data = data,
-                    Sender = _endPoint
-                });
-            }
+            DataReceived?.Invoke(this, new NetworkReceiveEventArgs
+            {
+                Data = data,
+                Sender = _endPoint
+            });
         }
 
         private void ReceiveData()

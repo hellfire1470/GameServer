@@ -85,10 +85,10 @@ namespace GameServer
         #region "Online"
         public static Cmd Online = new Cmd(new string[] { "online" }, (string[] args) =>
         {
-            Console.WriteLine(MainClass._dictServerUser.Count + " Clients are connected to the server");
+            Console.WriteLine(MainClass.Server.ServerUser.Count + " Clients are connected to the server");
             int logged_in = 0;
             int ingame = 0;
-            foreach (ServerUser serverUser in MainClass._dictServerUser.Values)
+            foreach (Server.User serverUser in MainClass.Server.ServerUser.Values)
             {
                 Account account = serverUser.Account;
                 if (account.Authentificated)
@@ -135,7 +135,7 @@ namespace GameServer
                         string password = args[2];
                         if (username.Trim(' ') != "" && password.Trim(' ') != "")
                         {
-                            if (SqlAccount.Create(username, password))
+                            if (SQL.Account.Create(username, password))
                             {
                                 Console.WriteLine("Account " + username + " successfully created");
                             }
@@ -158,11 +158,11 @@ namespace GameServer
                     IAccount account;
                     if (int.TryParse(accountId, out id))
                     {
-                        account = SqlAccount.Load(id);
+                        account = SQL.Account.Load(id);
                     }
                     else
                     {
-                        account = SqlAccount.Load(accountId);
+                        account = SQL.Account.Load(accountId);
                     }
                     if (account != null)
                     {
@@ -171,7 +171,7 @@ namespace GameServer
                         Console.WriteLine("name".PadRight(20) + account.Username);
                         Console.WriteLine("password".PadRight(20) + account.Password);
                         Console.WriteLine(" ### Characters ### ");
-                        foreach (SqlCharacter character in SqlAccount.GetCharacters(account.Id))
+                        foreach (SQL.Character character in SQL.Account.GetCharacters(account.Id))
                         {
                             Console.WriteLine(character.Id + " - " + character.Name);
                         }
@@ -195,7 +195,7 @@ namespace GameServer
                     int id = 0;
                     if (int.TryParse(args[1], out id))
                     {
-                        SqlCharacter character = SqlCharacter.Load(id);
+                        SQL.Character character = SQL.Character.Load(id);
                         if (character != null)
                         {
                             Console.WriteLine("Here is the dataset for character " + id);
@@ -213,7 +213,7 @@ namespace GameServer
                             }
                             Console.WriteLine(" ### Account ### ");
                             Console.WriteLine("Id".PadRight(20) + character.AccountId);
-                            Console.WriteLine("Username".PadRight(20) + SqlAccount.Load(character.AccountId).Username);
+                            Console.WriteLine("Username".PadRight(20) + SQL.Account.Load(character.AccountId).Username);
                         }
                         else
                         {

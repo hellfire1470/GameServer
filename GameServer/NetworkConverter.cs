@@ -1,11 +1,12 @@
-﻿using System;
+﻿using GameData.Network;
+
 namespace GameServer
 {
     public static class NetworkConverter
     {
-        public static Network.Data.Character NetworkCharacter(SqlCharacter character)
+        public static Character ConvertCharacter(SQL.Character character)
         {
-            return new Network.Data.Character()
+            return new Character
             {
                 Id = character.Id,
                 Class = character.Class,

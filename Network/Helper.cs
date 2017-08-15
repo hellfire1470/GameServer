@@ -2,7 +2,7 @@
 
 namespace Network
 {
-    public static partial class NetworkHelper
+    public static class NetworkHelper
     {
         private static int SIZE_INT = sizeof(int);
         private static int SIZE_LONG = sizeof(long);

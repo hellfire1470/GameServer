@@ -48,14 +48,11 @@ namespace Network
 
         protected virtual void OnDataReceived(IPEndPoint sender, byte[] data)
         {
-            if (DataReceived != null)
+            DataReceived?.Invoke(this, new NetworkReceiveEventArgs()
             {
-                DataReceived(this, new NetworkReceiveEventArgs()
-                {
-                    Data = data,
-                    Sender = sender
-                });
-            }
+                Data = data,
+                Sender = sender
+            });
         }
 
         private void ReceiveData()

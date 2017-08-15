@@ -32,16 +32,8 @@
   <ItemGroup>
     <Compile Include="Helper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Data.cs" />
-    <Compile Include="Packages.cs" />
     <Compile Include="UdpServer.cs" />
     <Compile Include="UdpClient.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\GameData\GameData.csproj">
-      <Project>{4A9D27B2-4980-4108-8CCF-1D2E536226AA}</Project>
-      <Name>GameData</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

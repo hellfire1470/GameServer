@@ -1,7 +1,6 @@
-﻿using System;
-using System.Threading;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using GameData;
+using GameData.Network;
 
 namespace GameServer
 {
@@ -19,12 +18,10 @@ namespace GameServer
 
     public class Account : IAccount
     {
-        // This is overwritten in Server->ApplyStartupArgs function
-        public static double TimeoutInMinutes = 15;
 
         public bool Authentificated { get; private set; } = false;
         public bool InGame { get; private set; } = false;
-        public SqlCharacter Character { get; private set; } = null;
+        public SQL.Character Character { get; private set; } = null;
 
         private int _id;
         private string _username;
@@ -44,10 +41,10 @@ namespace GameServer
 
         public ErrorResult Login(string user, string password)
         {
-            IAccount iAccount = SqlAccount.Load(user);
+            IAccount iAccount = SQL.Account.Load(user);
             //todo:: hash password in database
 
-            if (iAccount.Username == user && iAccount.Password == SqlAccount.HashPassword(user, password))
+            if (iAccount.Username == user && iAccount.Password == SQL.Account.HashPassword(user, password))
             {
 
                 if (iAccount.GameKey == "")
@@ -92,7 +89,7 @@ namespace GameServer
         {
             if (CanJoinWorld(characterId))
             {
-                Character = SqlCharacter.Load(characterId);
+                Character = SQL.Character.Load(characterId);
                 InGame = true;
                 return true;
             }
@@ -108,17 +105,17 @@ namespace GameServer
         public List<int> GetCharacterIdList()
         {
             if (Authentificated)
-                return SqlAccount.GetCharacterIds(Id);
+                return SQL.Account.GetCharacterIds(Id);
             return new List<int>();
         }
 
-        public Network.Data.Character[] GetNetworkCharacters()
+        public Character[] GetNetworkCharacters()
         {
             List<int> characterIds = GetCharacterIdList();
-            Network.Data.Character[] networkCharacters = new Network.Data.Character[characterIds.Count];
+            Character[] networkCharacters = new Character[characterIds.Count];
             for (int i = 0; i < characterIds.Count; i++)
             {
-                networkCharacters[i] = NetworkConverter.NetworkCharacter(SqlCharacter.Load(characterIds[i]));
+                networkCharacters[i] = NetworkConverter.ConvertCharacter(SQL.Character.Load(characterIds[i]));
             }
             return networkCharacters;
         }
