@@ -76,20 +76,6 @@ namespace GameServer.SQL
             }
             Logger.Log("Done");
         }
-
-
-
-
-        public List<int> GetCharacterIds(int accountId)
-        {
-            Dictionary<int, Dictionary<string, string>> characters = ExecuteQuery("SELECT id FROM character WHERE accountid = @1", new object[] { accountId });
-            List<int> characterIds = new List<int>();
-            foreach (Dictionary<string, string> character in characters.Values)
-            {
-                characterIds.Add(int.Parse(character["id"]));
-            }
-            return characterIds;
-        }
     }
 
 }

@@ -5,10 +5,10 @@ namespace GameServer.IO
 {
     public static class CommandManager
     {
-        private static readonly List<Cmd> _commands = new List<Cmd>();
-        public static List<Cmd> Commands { get { return _commands; } }
+        private static readonly List<Command> _commands = new List<Command>();
+        public static List<Command> Commands { get { return _commands; } }
 
-        public static void AddCommand(Cmd cmd)
+        public static void AddCommand(Command cmd)
         {
             _commands.Add(cmd);
         }
@@ -20,7 +20,7 @@ namespace GameServer.IO
 
             string[] cmdArgs = new string[args.Length - 1];
             Array.Copy(args, 1, cmdArgs, 0, cmdArgs.Length);
-            foreach (Cmd cmd in _commands)
+            foreach (Command cmd in _commands)
             {
                 if (cmd.Keywords.Contains(inputKeyword))
                 {

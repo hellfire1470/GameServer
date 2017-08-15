@@ -93,5 +93,16 @@ namespace GameServer.SQL
                 "VALUES (@1, @2, @3, @4, @5, @6, @7, @8)", new object[] { account.Id, name, cl, race, level, exp, locationId, fraction }
             ) == 1 ? ErrorResult.Success : ErrorResult.UnknownError;
         }
+
+        public static List<int> GetCharacterIds(int accountId)
+        {
+            Dictionary<int, Dictionary<string, string>> characters = Global.SqlBase.ExecuteQuery("SELECT id FROM character WHERE accountid = @1", new object[] { accountId });
+            List<int> characterIds = new List<int>();
+            foreach (Dictionary<string, string> character in characters.Values)
+            {
+                characterIds.Add(int.Parse(character["id"]));
+            }
+            return characterIds;
+        }
     }
 }

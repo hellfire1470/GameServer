@@ -7,13 +7,13 @@ namespace GameServer
     public static class BasicCommands
     {
         #region "Quit"
-        public static Cmd Quit = new Cmd(new string[] { "quit", "stop", "exit", "close" }, (string[] args) =>
+        public static Command Quit = new Command(new string[] { "quit", "stop", "exit", "close" }, (string[] args) =>
         {
             Environment.Stop();
         }, "Closes the server.");
         #endregion
         #region "ChangeName"
-        public static Cmd ChangeName = new Cmd(new string[] { "name" }, (string[] args) =>
+        public static Command ChangeName = new Command(new string[] { "name" }, (string[] args) =>
         {
             string name = String.Join(" ", args);
             if (name == "?")
@@ -35,7 +35,7 @@ namespace GameServer
         }, "Changes the name of this server. Type 'name ?' to get more information");
         #endregion
         #region "ChangePort"
-        public static Cmd ChangePort = new Cmd(new string[] { "port" }, (string[] args) =>
+        public static Command ChangePort = new Command(new string[] { "port" }, (string[] args) =>
         {
             int port = 0;
             if (int.TryParse(args[0], out port) && port >= 0 && port <= 65535)
@@ -54,7 +54,7 @@ namespace GameServer
         }, "Changes the port to the given.\nUsage: port <port>\nExample: port 10");
         #endregion
         #region "Help"
-        public static Cmd Help = new Cmd(new string[] { "?", "help" }, (string[] args) =>
+        public static Command Help = new Command(new string[] { "?", "help" }, (string[] args) =>
         {
 
 
@@ -70,7 +70,7 @@ namespace GameServer
                 Console.WriteLine("Type 'help <command>' to show information about the command");
             }
 
-            foreach (Cmd cmd in CommandManager.Commands)
+            foreach (Command cmd in CommandManager.Commands)
             {
                 if (specificCmd != "" && !cmd.Keywords.Contains(specificCmd)) { continue; }
 
@@ -83,7 +83,7 @@ namespace GameServer
         }, "show list of commands");
         #endregion
         #region "Online"
-        public static Cmd Online = new Cmd(new string[] { "online" }, (string[] args) =>
+        public static Command Online = new Command(new string[] { "online" }, (string[] args) =>
         {
             Console.WriteLine(MainClass.Server.ServerUser.Count + " Clients are connected to the server");
             int logged_in = 0;
@@ -105,7 +105,7 @@ namespace GameServer
         }, "Show online players");
         #endregion
         #region "show"
-        public static Cmd Show = new Cmd(new string[] { "show" }, (string[] args) =>
+        public static Command Show = new Command(new string[] { "show" }, (string[] args) =>
         {
             if (args.Length > 1)
             {
@@ -121,7 +121,7 @@ namespace GameServer
         });
         #endregion
         #region "account"
-        public static Cmd Account = new Cmd(new string[] { "account" }, (string[] args) =>
+        public static Command Account = new Command(new string[] { "account" }, (string[] args) =>
         {
             if (args.Length > 1)
             {
@@ -183,7 +183,7 @@ namespace GameServer
         });
         #endregion
         #region "character"
-        public static Cmd Character = new Cmd(new string[] { "character" }, (string[] args) =>
+        public static Command Character = new Command(new string[] { "character" }, (string[] args) =>
         {
             if (args.Length > 1)
             {
@@ -226,7 +226,7 @@ namespace GameServer
         });
         #endregion
         #region "stats"
-        public static Cmd Stats = new Cmd(new string[] { "stats" }, (string[] args) =>
+        public static Command Stats = new Command(new string[] { "stats" }, (string[] args) =>
         {
 
         });

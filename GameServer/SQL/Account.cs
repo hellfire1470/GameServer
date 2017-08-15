@@ -89,7 +89,7 @@ namespace GameServer.SQL
 
         public static List<Character> GetCharacters(int accountId)
         {
-            List<int> characterIds = Global.SqlBase.GetCharacterIds(accountId);
+            List<int> characterIds = Character.GetCharacterIds(accountId);
             List<Character> characters = new List<Character>();
             foreach (int characterId in characterIds)
             {
@@ -101,7 +101,7 @@ namespace GameServer.SQL
 
         public static List<int> GetCharacterIds(int accountId)
         {
-            return Global.SqlBase.GetCharacterIds(accountId);
+            return Character.GetCharacterIds(accountId);
         }
     }
 }
