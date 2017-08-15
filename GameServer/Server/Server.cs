@@ -1,8 +1,6 @@
 ﻿using System.Net;
 using Network;
-using GameData.Network.Packages;
 using System.Collections.Generic;
-using GameData;
 using GameServer.Network;
 
 namespace GameServer.Server
