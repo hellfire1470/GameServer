@@ -15,11 +15,11 @@ namespace GameServer.Server
 
         public void Start()
         {
+            PackageFunctions.SetServer(this);
             _server = new UdpServer(Global.Port);
             _server.DataReceived += OnServerReceive;
             _server.Start();
 
-            PackageFunctions.SetServer(this);
 
             Logger.Log("Listening on Port: " + Global.Port);
         }

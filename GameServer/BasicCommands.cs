@@ -91,6 +91,8 @@ namespace GameServer
             foreach (Server.Connection serverUser in MainClass.Server.ServerUser.Values)
             {
                 Server.Account account = serverUser.Account;
+                if (account == null)
+                    continue;
                 if (account.Authentificated)
                 {
                     logged_in++;
