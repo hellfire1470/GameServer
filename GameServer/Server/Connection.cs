@@ -4,7 +4,7 @@ using System.Net;
 
 namespace GameServer.Server
 {
-    public class User
+    public class Connection
     {
         public static double TimeoutTimeInMinutes = 1;
 
@@ -17,14 +17,18 @@ namespace GameServer.Server
         private Thread TimeoutThread;
 
 
-        public User(Account account, IPEndPoint ipendpoint)
+        public Connection(IPEndPoint ipendpoint)
         {
-            Account = account;
             IPEndPoint = ipendpoint;
             RefreshActivity();
 
             TimeoutThread = new Thread(TimeoutThreadFunction);
             TimeoutThread.Start();
+        }
+
+        public void SetAccount(Account account)
+        {
+            Account = account;
         }
 
         public void RefreshActivity()

@@ -2,6 +2,7 @@
 using Network;
 using GameData.Network.Packages;
 using System.Collections.Generic;
+using GameData;
 
 namespace GameServer.Server
 {
@@ -26,7 +27,7 @@ namespace GameServer.Server
         {
             if (!_dictServerUser.ContainsKey(e.Sender))
             {
-                User serverUser = new User(new Account(), e.Sender);
+                User serverUser = new User(e.Sender);
                 serverUser.OnTimeout += () =>
                 {
                     Logger.Log("[" + e.Sender.Address + "] was disconnected. Reason: Timeout");
@@ -35,17 +36,26 @@ namespace GameServer.Server
                 };
                 _dictServerUser.Add(e.Sender, serverUser);
             }
+
             _dictServerUser[e.Sender].RefreshActivity();
             Account account = _dictServerUser[e.Sender].Account;
+
+
+            if (account == null && NetworkHelperExtention.GetPackageType(e.Data) != PackageType.Login)
+            {
+                _server.SendBytes(e.Sender, NetworkHelper.Serialize(new LogoutResponse { Success = true, Status = LogoutStatus.TitleScreen }));
+            }
 
             switch (NetworkHelperExtention.GetPackageType(e.Data))
             {
                 #region "Login"
                 case PackageType.Login:
                     LoginRequest request = NetworkHelper.Deserialize<LoginRequest>(e.Data);
-                    GameData.ErrorResult loginResult = account.Login(request.Username, request.Password);
-                    if (loginResult == GameData.ErrorResult.Success)
+                    Account _account = new Account(request.Username);
+                    ErrorResult loginResult = _account.Login(request.Password);
+                    if (loginResult == ErrorResult.Success)
                     {
+                        _dictServerUser[e.Sender].SetAccount(_account);
                         _server.SendBytes(e.Sender, NetworkHelper.Serialize(new LoginResponse { Success = true }));
                         Logger.Log("[" + e.Sender.Address + "] " + account.Username + " connected to Server");
                     }

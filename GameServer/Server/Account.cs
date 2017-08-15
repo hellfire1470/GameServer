@@ -1,65 +1,33 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using GameData;
 using GameData.Network;
 using GameServer.Network;
 
-namespace GameServer
+namespace GameServer.Server
 {
-
-    public interface IAccount
+    public class Account : SQL.AccountData
     {
-        int Id { get; }
-        string Username { get; }
-        string Password { get; }
-        int MaxCharacters { get; }
-        string GameKey { get; }
-        bool Banned { get; }
-    }
-
-
-    public class Account : IAccount
-    {
-
         public bool Authentificated { get; private set; } = false;
         public bool InGame { get; private set; } = false;
         public SQL.Character Character { get; private set; } = null;
 
-        private int _id;
-        private string _username;
-        private string _password;
-        private int _maxCharacters;
-        private string _gameKey;
-        private bool _banned;
+        public Account(int id) : base(id) { }
+        public Account(string name) : base(name) { }
 
-        public int Id { get { return _id; } private set { _id = value; } }
-        public string Username { get { return _username; } private set { _username = value; } }
-        public string Password { get { return _password; } private set { _password = value; } }
-        public int MaxCharacters { get { return _maxCharacters; } private set { _maxCharacters = value; } }
-        public string GameKey { get { return _gameKey; } private set { _gameKey = value; } }
-        public bool Banned { get { return _banned; } private set { _banned = value; } }
-
-        //  public SqlAccount SqlAccount { get; private set; } = null;
-
-        public ErrorResult Login(string user, string password)
+        public ErrorResult Login(string password)
         {
-            IAccount iAccount = SQL.Account.Load(user);
             //todo:: hash password in database
 
-            if (iAccount.Username == user && iAccount.Password == SQL.Account.HashPassword(user, password))
+            if (Password == HashPassword(Username, password))
             {
 
-                if (iAccount.GameKey == "")
+                if (GameKey == "")
                     return ErrorResult.InvalidGameKey;
 
-                if (iAccount.Banned)
+                if (Banned)
                     return ErrorResult.Banned;
 
-                Id = iAccount.Id;
-                Username = iAccount.Username;
-                Password = iAccount.Password;
-                GameKey = iAccount.GameKey;
-                MaxCharacters = iAccount.MaxCharacters;
-                Banned = iAccount.Banned;
                 Authentificated = true;
                 return ErrorResult.Success;
             }
@@ -106,7 +74,7 @@ namespace GameServer
         public List<int> GetCharacterIdList()
         {
             if (Authentificated)
-                return SQL.Account.GetCharacterIds(Id);
+                return SQL.AccountData.GetCharacterIds(Id);
             return new List<int>();
         }
 

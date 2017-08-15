@@ -1,50 +1,41 @@
-﻿using System;
-using GameData;
+﻿using GameData;
 using System.Collections.Generic;
 
 namespace GameServer.SQL
 {
-    public class Character
+
+    public interface ICharacter
     {
-        public static Dictionary<int, Character> Characters = new Dictionary<int, Character>();
+        int Id { get; }
+        int AccountId { get; }
+        string Name { get; }
+        ClassType Class { get; }
+        RaceType Race { get; }
+        int Level { get; }
+        int Exp { get; }
+        Location Location { get; }
+        FractionType Fraction { get; }
+        Dictionary<int, Dictionary<string, string>> Meta { get; }
 
-        public int Id { get; set; }
-        public int AccountId { get; set; }
-        public string Name { get; set; }
-        public ClassType Class { get; set; }
-        public RaceType Race { get; set; }
-        public int Level { get; set; }
-        public int Exp { get; set; }
-        public Location Location { get; set; }
-        public FractionType Fraction { get; set; }
-        public Dictionary<int, Dictionary<string, string>> Meta { get; set; }
+    }
 
-        public Character(int id, int accountId, string name, ClassType cl, RaceType race, int level, int exp, Location location, FractionType fraction, Dictionary<int, Dictionary<string, string>> meta)
-        {
-            Id = id;
-            AccountId = accountId;
-            Name = name;
-            Class = cl;
-            Race = race;
-            Level = level;
-            Exp = exp;
-            Location = location;
-            Fraction = fraction;
-            Meta = meta;
-        }
+    public class Character : ICharacter
+    {
 
-        public static void Insert(Character character)
-        {
-            Characters[character.Id] = character;
-        }
+        public int Id { get; private set; }
+        public int AccountId { get; private set; }
+        public string Name { get; private set; }
+        public ClassType Class { get; private set; }
+        public RaceType Race { get; private set; }
+        public int Level { get; private set; }
+        public int Exp { get; private set; }
+        public Location Location { get; private set; }
+        public FractionType Fraction { get; private set; }
+        public Dictionary<int, Dictionary<string, string>> Meta { get; private set; }
+
 
         public static Character Load(int id)
         {
-            if (Characters.ContainsKey(id))
-            {
-                //return Characters[id];
-            }
-
             Dictionary<int, Dictionary<string, string>> character = Global.SqlBase.ExecuteQuery("SELECT id, accountid, class, level, fraction, exp, name, race, locationid FROM character WHERE id = @1", new object[] { id });
 
             if (character.Count == 1)
@@ -55,13 +46,20 @@ namespace GameServer.SQL
                 {
                     return null;
                 }
-                Character sqlCharacter = new Character(int.Parse(character[0]["id"]), int.Parse(character[0]["accountid"]), character[0]["name"],
-                                       (ClassType)int.Parse(character[0]["class"]), (RaceType)int.Parse(character[0]["race"]),
-                                       int.Parse(character[0]["level"]), int.Parse(character[0]["exp"]),
-                                                             new Location(MapManager.GetMap(int.Parse(locationData["mapid"])), int.Parse(locationData["x"]), int.Parse(locationData["y"]), int.Parse(locationData["z"])),
-                                       (FractionType)int.Parse(character[0]["fraction"]), characterMeta);
-                //Insert(sqlCharacter);
-                return sqlCharacter;
+                Character iCharacter = new Character
+                {
+                    Id = int.Parse(character[0]["id"]),
+                    AccountId = int.Parse(character[0]["accountid"]),
+                    Name = character[0]["name"],
+                    Class = (ClassType)int.Parse(character[0]["class"]),
+                    Race = (RaceType)int.Parse(character[0]["race"]),
+                    Level = int.Parse(character[0]["level"]),
+                    Exp = int.Parse(character[0]["exp"]),
+                    Location = new Location(MapManager.GetMap(int.Parse(locationData["mapid"])), int.Parse(locationData["x"]), int.Parse(locationData["y"]), int.Parse(locationData["z"])),
+                    Fraction = (FractionType)int.Parse(character[0]["fraction"]),
+                    Meta = characterMeta
+                };
+                return iCharacter;
             }
             return null;
         }
@@ -77,11 +75,11 @@ namespace GameServer.SQL
             return null;
         }
 
-        public static ErrorResult Create(IAccount account, string name, ClassType cl, RaceType race, int level, int exp, Location location, FractionType fraction)
+        public static ErrorResult Create(AccountData account, string name, ClassType cl, RaceType race, int level, int exp, Location location, FractionType fraction)
         {
             if (name.Trim() == "") return ErrorResult.InvalidName;
 
-            if (Account.GetCharacterIds(account.Id).Count >= account.MaxCharacters)
+            if (AccountData.GetCharacterIds(account.Id).Count >= account.MaxCharacters)
             {
                 return ErrorResult.CharacterLimit;
             }

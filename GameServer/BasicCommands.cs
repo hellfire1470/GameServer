@@ -90,7 +90,7 @@ namespace GameServer
             int ingame = 0;
             foreach (Server.User serverUser in MainClass.Server.ServerUser.Values)
             {
-                Account account = serverUser.Account;
+                Server.Account account = serverUser.Account;
                 if (account.Authentificated)
                 {
                     logged_in++;
@@ -122,65 +122,65 @@ namespace GameServer
         #endregion
         #region "account"
         public static Command Account = new Command(new string[] { "account" }, (string[] args) =>
-        {
-            if (args.Length > 1)
-            {
-                if (args[0] == "create")
-                {
-                    if (args.Length == 3)
-                    {
-                        string username = args[1];
-                        string password = args[2];
-                        if (username.Trim(' ') != "" && password.Trim(' ') != "")
-                        {
-                            if (SQL.Account.Create(username, password))
-                            {
-                                Console.WriteLine("Account " + username + " successfully created");
-                            }
-                            else
-                            {
-                                Console.WriteLine("Failed to create account " + username);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("Wrong usage of command account create.");
-                        Console.WriteLine("usage: account create <username> <password>");
-                    }
-                }
-                else if (args[0] == "show")
-                {
-                    string accountId = args[1];
-                    int id = 0;
-                    IAccount account;
-                    if (int.TryParse(accountId, out id))
-                    {
-                        account = SQL.Account.Load(id);
-                    }
-                    else
-                    {
-                        account = SQL.Account.Load(accountId);
-                    }
-                    if (account != null)
-                    {
-                        Console.WriteLine("Here is the dataset for " + accountId);
-                        Console.WriteLine("id".PadRight(20) + account.Id.ToString());
-                        Console.WriteLine("name".PadRight(20) + account.Username);
-                        Console.WriteLine("password".PadRight(20) + account.Password);
-                        Console.WriteLine(" ### Characters ### ");
-                        foreach (SQL.Character character in SQL.Account.GetCharacters(account.Id))
-                        {
-                            Console.WriteLine(character.Id + " - " + character.Name);
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("No dataset found for " + accountId);
-                    }
-                }
-            }
-        });
+      {
+          if (args.Length > 1)
+          {
+              if (args[0] == "create")
+              {
+                  if (args.Length == 3)
+                  {
+                      string username = args[1];
+                      string password = args[2];
+                      if (username.Trim(' ') != "" && password.Trim(' ') != "")
+                      {
+                          if (SQL.AccountData.Create(username, password))
+                          {
+                              Console.WriteLine("Account " + username + " successfully created");
+                          }
+                          else
+                          {
+                              Console.WriteLine("Failed to create account " + username);
+                          }
+                      }
+                  }
+                  else
+                  {
+                      Console.WriteLine("Wrong usage of command account create.");
+                      Console.WriteLine("usage: account create <username> <password>");
+                  }
+              }
+              else if (args[0] == "show")
+              {
+                  string accountId = args[1];
+                  int id = 0;
+                  SQL.AccountData account;
+                  if (int.TryParse(accountId, out id))
+                  {
+                      account = new SQL.AccountData(id);
+                  }
+                  else
+                  {
+                      account = new SQL.AccountData(accountId);
+                  }
+                  if (account != null)
+                  {
+                      Console.WriteLine("Here is the dataset for " + accountId);
+                      Console.WriteLine("id".PadRight(20) + account.Id.ToString());
+                      Console.WriteLine("name".PadRight(20) + account.Username);
+                      Console.WriteLine("password".PadRight(20) + account.Password);
+                      Console.WriteLine(" ### Characters ### ");
+                      foreach (SQL.Character character in SQL.AccountData.GetCharacters(account.Id))
+                      {
+                          Console.WriteLine(character.Id + " - " + character.Name);
+                      }
+                  }
+                  else
+                  {
+                      Console.WriteLine("No dataset found for " + accountId);
+                  }
+              }
+          }
+      });
         #endregion
         #region "character"
         public static Command Character = new Command(new string[] { "character" }, (string[] args) =>
@@ -210,7 +210,7 @@ namespace GameServer
                             }
                             Console.WriteLine(" ### Account ### ");
                             Console.WriteLine("Id".PadRight(20) + character.AccountId);
-                            Console.WriteLine("Username".PadRight(20) + SQL.Account.Load(character.AccountId).Username);
+                            Console.WriteLine("Username".PadRight(20) + new SQL.AccountData(character.AccountId).Username);
                         }
                         else
                         {
