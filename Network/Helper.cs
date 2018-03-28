@@ -2,6 +2,15 @@
 
 namespace Network
 {
+
+    public class SerializeException : Exception
+    {
+        public SerializeException(string message) : base(message)
+        {
+
+        }
+    }
+
     public static class NetworkHelper
     {
         private static int SIZE_INT = sizeof(int);
@@ -161,7 +170,7 @@ namespace Network
             }
             catch (Exception ex)
             {
-                throw new Exception("Internal Error: " + ex.Message);
+                throw new SerializeException("Internal Error: " + ex.Message);
             }
         }
 
@@ -216,7 +225,7 @@ namespace Network
                 return size;
             }
 
-            throw new Exception("Internal Error: can not get size of " + fieldInfo.FieldType);
+            throw new SerializeException("Internal Error: can not get size of " + fieldInfo.FieldType);
         }
 
         private static string StringFromByteArray(ref byte[] array, int startIndex)

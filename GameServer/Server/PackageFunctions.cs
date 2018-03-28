@@ -1,9 +1,8 @@
-﻿using System;
-
+﻿using Network;
 using GameServer.Network;
 using GameData.Network.Packages;
-using Network;
-using GameData;
+using GameData.Network;
+using GameServer.SQL;
 
 namespace GameServer.Server
 {
@@ -16,6 +15,7 @@ namespace GameServer.Server
         public static Package CreateCharacter = new Package(PackageType.CreateCharacter, CreateCharacterFunction);
         public static Package GetCharacters = new Package(PackageType.GetCharacters, GetCharactersFunction);
         public static Package SelectCharacter = new Package(PackageType.SelectCharacter, SelectCharacterFunction);
+        public static Package JoinWorld = new Package(PackageType.JoinWorld, JoinWorldFunction);
 
         static PackageFunctions()
         {
@@ -28,6 +28,11 @@ namespace GameServer.Server
             Logger.Log("Done");
         }
 
+        private static bool IsAuthentificated(Account account)
+        {
+            return account != null && account.Authentificated;
+        }
+
         public static void SetServer(Server server)
         {
             _server = server;
@@ -37,8 +42,8 @@ namespace GameServer.Server
         {
             LoginRequest request = NetworkHelper.Deserialize<LoginRequest>(e.Data);
             Account _account = new Account(request.Username);
-            ErrorResult loginResult = _account.Login(request.Password);
-            if (loginResult == ErrorResult.Success)
+            ResultType loginResult = _account.Login(request.Password);
+            if (loginResult == ResultType.Success)
             {
                 _server.ServerUser[e.Sender].SetAccount(_account);
                 _server.SendBytes(e.Sender, NetworkHelper.Serialize(new LoginResponse { Success = true }));
@@ -52,16 +57,17 @@ namespace GameServer.Server
 
         public static void LogoutFunction(Connection connection, NetworkReceiveEventArgs e)
         {
-            connection.Account.Logout();
+            connection.Account?.Logout();
             _server.SendBytes(e.Sender, NetworkHelper.Serialize(new LogoutResponse { Success = true }));
         }
 
         public static void CreateCharacterFunction(Connection connection, NetworkReceiveEventArgs e)
         {
             // check if user is authentificated
-            if (!connection.Account.Authentificated)
+            if (!IsAuthentificated(connection.Account))
             {
                 LogoutFunction(connection, null);
+                return;
             }
 
             //getting the request
@@ -70,24 +76,12 @@ namespace GameServer.Server
             // getting delivered data
             GameData.Network.Character characterData = createCharacterRequest.CharacterData;
 
-            // checking character exists
-            SQL.Character character = SQL.Character.Load(characterData.Name);
-            if (character != null)
-            {
-                _server.SendBytes(e.Sender, NetworkHelper.Serialize(new CreateCharacterResponse()
-                {
-                    Success = false,
-                    Error = ErrorResult.NameExists
-                }));
-                return;
-            }
-
             // create character
-            ErrorResult creationResult = SQL.Character.Create(connection.Account, characterData.Name, characterData.Class,
-                characterData.Race, 1, 0, new Location(MapManager.GetMap(1), 0f, 1f, 2f), characterData.Fraction);
+            Character character = new Character();
+            ResultType creationResult = character.Create(connection.Account);
 
             // sending result to connection
-            bool success = creationResult == ErrorResult.Success;
+            bool success = creationResult == ResultType.Success;
             _server.SendBytes(e.Sender, NetworkHelper.Serialize(new CreateCharacterResponse()
             {
                 Success = success,
@@ -97,12 +91,23 @@ namespace GameServer.Server
 
         public static void GetCharactersFunction(Connection connection, NetworkReceiveEventArgs e)
         {
+            if (!IsAuthentificated(connection.Account))
+            {
+                LogoutFunction(connection, null);
+                return;
+            }
             GetCharactersResponse gacr = new GetCharactersResponse { Success = true, Characters = connection.Account.GetNetworkCharacters() };
             _server.SendBytes(e.Sender, NetworkHelper.Serialize(gacr));
         }
 
         public static void SelectCharacterFunction(Connection connection, NetworkReceiveEventArgs e)
         {
+            if (!IsAuthentificated(connection.Account))
+            {
+                LogoutFunction(connection, null);
+                return;
+            }
+
             SelectCharacterRequest selectCharacterRequest = NetworkHelper.Deserialize<SelectCharacterRequest>(e.Data);
             SelectCharacterResponse scr = new SelectCharacterResponse();
             if (connection.Account.JoinWorld(selectCharacterRequest.CharacterId))
@@ -110,8 +115,26 @@ namespace GameServer.Server
                 scr.Success = true;
             }
             _server.SendBytes(e.Sender, NetworkHelper.Serialize(scr));
+
         }
 
+        public static void JoinWorldFunction(Connection connection, NetworkReceiveEventArgs e)
+        {
+            // check if user is authentificated
+            if (!IsAuthentificated(connection.Account))
+            {
+                LogoutFunction(connection, null);
+                return;
+            }
+            // getting character data
+            JoinWorldRequest request = NetworkHelper.Deserialize<JoinWorldRequest>(e.Data);
 
+            // join world
+            // send result to player
+            bool joined = connection.Account.JoinWorld(request.Character.Id);
+            _server.SendBytes(e.Sender, NetworkHelper.Serialize(new JoinWorldResponse { Success = joined }));
+
+
+        }
     }
 }

@@ -1,10 +1,14 @@
 ﻿using GameData;
 using System.Collections.Generic;
+using GameData.Environment.Entity;
+using GameData.Environment.Location;
+using GameData.Network;
+using System.Linq.Expressions;
 
 namespace GameServer.SQL
 {
 
-    public interface ICharacter
+    public interface ICharacterData
     {
         int Id { get; }
         int AccountId { get; }
@@ -19,13 +23,13 @@ namespace GameServer.SQL
 
     }
 
-    public class Character : ICharacter
+    public class CharacterData : ICharacterData
     {
 
-        public int Id { get; private set; }
-        public int AccountId { get; private set; }
-        public string Name { get; private set; }
-        public ClassType Class { get; private set; }
+        public int Id { get; protected set; }
+        public int AccountId { get; protected set; }
+        public string Name { get; protected set; }
+        public ClassType Class { get; protected set; }
         public RaceType Race { get; private set; }
         public int Level { get; private set; }
         public int Exp { get; private set; }
@@ -33,8 +37,7 @@ namespace GameServer.SQL
         public FractionType Fraction { get; private set; }
         public Dictionary<int, Dictionary<string, string>> Meta { get; private set; }
 
-
-        public static Character Load(int id)
+        public static CharacterData Load(int id)
         {
             Dictionary<int, Dictionary<string, string>> character = Global.SqlBase.ExecuteQuery("SELECT id, accountid, class, level, fraction, exp, name, race, locationid FROM character WHERE id = @1", new object[] { id });
 
@@ -46,7 +49,7 @@ namespace GameServer.SQL
                 {
                     return null;
                 }
-                Character iCharacter = new Character
+                CharacterData iCharacter = new CharacterData
                 {
                     Id = int.Parse(character[0]["id"]),
                     AccountId = int.Parse(character[0]["accountid"]),
@@ -64,7 +67,7 @@ namespace GameServer.SQL
             return null;
         }
 
-        public static Character Load(string name)
+        public static CharacterData Load(string name)
         {
             // todo: sql injection protection
             Dictionary<int, Dictionary<string, string>> characters = Global.SqlBase.ExecuteQuery("SELECT id FROM character WHERE name = @1", new string[] { name });
@@ -75,21 +78,24 @@ namespace GameServer.SQL
             return null;
         }
 
-        public static ErrorResult Create(AccountData account, string name, ClassType cl, RaceType race, int level, int exp, Location location, FractionType fraction)
+        public virtual ResultType Create(AccountData account)
         {
-            if (name.Trim() == "") return ErrorResult.InvalidName;
-
             if (AccountData.GetCharacterIds(account.Id).Count >= account.MaxCharacters)
             {
-                return ErrorResult.CharacterLimit;
+                return ResultType.CharacterLimit;
             }
+
+            Location = new Location(MapManager.GetMap(1), 0f, 0f, 0f);
+            Fraction = FractionType.A;
+
+            // todo: create Transaction
             Global.SqlBase.ExecuteQuery("INSERT INTO location(mapid, x, y, z) VALUES (@1, @2, @3, @4)",
-                                        new object[] { location.Map.Id, location.CoordX, location.CoordY, location.CoordZ });
+                                        new object[] { Location.Map.Id, Location.CoordX, Location.CoordY, Location.CoordZ });
             long locationId = Global.SqlBase.LastInsertId();
             return Global.SqlBase.ExecuteNonQuery(
-                "INSERT INTO character(accountid, name, class, race, level, exp, locationid, fraction) " +
-                "VALUES (@1, @2, @3, @4, @5, @6, @7, @8)", new object[] { account.Id, name, cl, race, level, exp, locationId, fraction }
-            ) == 1 ? ErrorResult.Success : ErrorResult.UnknownError;
+                "INSERT OR IGNORE INTO character(accountid, name, class, race, level, exp, locationid, fraction) " +
+                "VALUES (@1, @2, @3, @4, @5, @6, @7, @8)", new object[] { account.Id, Name, Class, Race, 1, 0, locationId, Fraction }
+            ) == 1 ? ResultType.Success : ResultType.UnknownError;
         }
 
         public static List<int> GetCharacterIds(int accountId)

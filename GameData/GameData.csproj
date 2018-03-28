@@ -30,7 +30,6 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Base.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Network\Data.cs" />
     <Compile Include="Network\NetworkHelper.cs" />
@@ -44,6 +43,21 @@
     <Compile Include="Network\Packages\Character\GetCharacters.cs" />
     <Compile Include="Network\Packages\Character\MoveCharacter.cs" />
     <Compile Include="Network\Packages\Character\SelectCharacter.cs" />
+    <Compile Include="Network\Packages\Character\JoinWorld.cs" />
+    <Compile Include="Account\Character\AnimationType.cs" />
+    <Compile Include="Environment\Location\Location.cs" />
+    <Compile Include="Environment\Location\Map.cs" />
+    <Compile Include="Environment\Entity\FractionType.cs" />
+    <Compile Include="Environment\Entity\ClassType.cs" />
+    <Compile Include="Environment\Entity\RaceType.cs" />
+    <Compile Include="Environment\Entity\RessourceType.cs" />
+    <Compile Include="Environment\Entity\RarityType.cs" />
+    <Compile Include="Environment\Entity\SexType.cs" />
+    <Compile Include="Environment\Item\QualityType.cs" />
+    <Compile Include="Environment\Item\SlotType.cs" />
+    <Compile Include="Network\ResultType.cs" />
+    <Compile Include="Environment\Entity\Entity.cs" />
+    <Compile Include="Manager\InputManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Network\" />
@@ -51,6 +65,13 @@
     <Folder Include="Network\Packages\Abstract\" />
     <Folder Include="Network\Packages\Account\" />
     <Folder Include="Network\Packages\Character\" />
+    <Folder Include="Account\" />
+    <Folder Include="Account\Character\" />
+    <Folder Include="Environment\" />
+    <Folder Include="Environment\Location\" />
+    <Folder Include="Environment\Entity\" />
+    <Folder Include="Environment\Item\" />
+    <Folder Include="Manager\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

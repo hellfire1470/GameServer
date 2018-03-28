@@ -8,6 +8,7 @@
         SelectCharacter,
         GetCharacters,
         CreateCharacter,
-        MoveCharacter
+        MoveCharacter,
+        JoinWorld
     }
 }

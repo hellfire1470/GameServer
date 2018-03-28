@@ -18,11 +18,11 @@ namespace GameServer.SQL
            " CONSTRAINT FK_locationmapid FOREIGN KEY (mapid) REFERENCES map(id));";
 
             //ACCOUNT
-            sqlCmd += "create table account(id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR[30] UNIQUE, password VARCHAR[256], maxcharacters INTEGER DEFAULT 3, gamekey VARCHAR[16] UNIQUE, banned BOOLEAN DEFAULT 0, bannedAt TIMESTAMP, banreason VARCHAR[256]);";
+            sqlCmd += "create table account(id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR[30] UNIQUE, password VARCHAR[256], maxcharacters INTEGER DEFAULT 3, gamekey VARCHAR[16] UNIQUE, banned BOOLEAN DEFAULT 0, bannedat TIMESTAMP, banreason VARCHAR[256]);";
 
             //CHARACTER
             sqlCmd += "create table character(id INTEGER PRIMARY KEY AUTOINCREMENT, accountid INTEGER, name VERCHAR[30] UNIQUE, class INTEGER," +
-           " race INTEGER, level INTEGER, exp INTEGER, locationid INTEGER, fraction INTEGER," +
+           " race INTEGER, level INTEGER, exp INTEGER, locationid INTEGER, fraction INTEGER, sex INTEGER, hair INTEGER, aye INTEGER, nose INTEGER, mouth INTEGER, " +
            " CONSTRAINT FK_CharsAccountId FOREIGN KEY (accountid) REFERENCES account(id)," +
            " CONSTRAINT FK_charslocationid FOREIGN KEY (locationid) REFERENCES location(id));";
             sqlCmd += "create table charactermeta(aid INTEGER PRIMARY KEY AUTOINCREMENT, characterid INTEGER, key VARCHAR[100], value TEXT," +

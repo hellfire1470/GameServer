@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using GameData;
+﻿using System.Collections.Generic;
 using GameData.Network;
 using GameServer.Network;
 
@@ -10,12 +8,12 @@ namespace GameServer.Server
     {
         public bool Authentificated { get; private set; } = false;
         public bool InGame { get; private set; } = false;
-        public SQL.Character Character { get; private set; } = null;
+        public SQL.CharacterData Character { get; private set; } = null;
 
         public Account(int id) : base(id) { }
         public Account(string name) : base(name) { }
 
-        public ErrorResult Login(string password)
+        public ResultType Login(string password)
         {
             //todo:: hash password in database
 
@@ -23,16 +21,16 @@ namespace GameServer.Server
             {
 
                 if (GameKey == "")
-                    return ErrorResult.InvalidGameKey;
+                    return ResultType.InvalidGameKey;
 
                 if (Banned)
-                    return ErrorResult.Banned;
+                    return ResultType.Banned;
 
                 Authentificated = true;
-                return ErrorResult.Success;
+                return ResultType.Success;
             }
             else
-                return ErrorResult.WrongData;
+                return ResultType.WrongData;
         }
 
         public void Logout()
@@ -58,7 +56,7 @@ namespace GameServer.Server
         {
             if (CanJoinWorld(characterId))
             {
-                Character = SQL.Character.Load(characterId);
+                Character = SQL.CharacterData.Load(characterId);
                 InGame = true;
                 return true;
             }
@@ -78,13 +76,13 @@ namespace GameServer.Server
             return new List<int>();
         }
 
-        public Character[] GetNetworkCharacters()
+        public GameData.Network.Character[] GetNetworkCharacters()
         {
             List<int> characterIds = GetCharacterIdList();
-            Character[] networkCharacters = new Character[characterIds.Count];
+            GameData.Network.Character[] networkCharacters = new GameData.Network.Character[characterIds.Count];
             for (int i = 0; i < characterIds.Count; i++)
             {
-                networkCharacters[i] = Converter.ConvertCharacter(SQL.Character.Load(characterIds[i]));
+                networkCharacters[i] = Converter.ConvertCharacter(SQL.CharacterData.Load(characterIds[i]));
             }
             return networkCharacters;
         }

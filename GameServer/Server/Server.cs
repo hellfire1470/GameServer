@@ -37,14 +37,20 @@ namespace GameServer.Server
                 serverUser.OnTimeout += () =>
                 {
                     Logger.Log("[" + e.Sender.Address + "] was disconnected. Reason: Timeout");
-                    serverUser.Account.Logout();
+                    if (serverUser.Account != null)
+                    {
+                        serverUser.Account.Logout();
+                    }
                     _dictServerUser.Remove(serverUser.IPEndPoint);
                 };
                 _dictServerUser.Add(e.Sender, serverUser);
             }
 
             _dictServerUser[e.Sender].RefreshActivity();
-            PackageManager.HandlePackage(_dictServerUser[e.Sender], e);
+            if (_dictServerUser[e.Sender].Account != null || NetworkHelperExtention.GetPackageType(e.Data) == GameData.Network.Packages.PackageType.Login)
+            {
+                PackageManager.HandlePackage(_dictServerUser[e.Sender], e);
+            }
         }
     }
 }

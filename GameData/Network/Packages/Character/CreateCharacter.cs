@@ -8,6 +8,6 @@
     public class CreateCharacterResponse : Abstract.Response
     {
         public CreateCharacterResponse() : base(PackageType.CreateCharacter) { }
-        public ErrorResult Error;
+        public ResultType Error;
     }
 }

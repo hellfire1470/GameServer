@@ -20,7 +20,14 @@ namespace GameServer.Network
 
             if (_dictPackages.ContainsKey(type))
             {
-                _dictPackages[type].Action(connection, args);
+                try
+                {
+                    _dictPackages[type].Action(connection, args);
+                }
+                catch (SerializeException ex)
+                {
+                    Logger.Error(ex.Message);
+                }
             }
         }
     }

@@ -9,7 +9,7 @@
     public class LoginResponse : Abstract.Response
     {
         public LoginResponse() : base(PackageType.Login) { }
-        public ErrorResult Error;
+        public ResultType Error;
         public Account Account;
     }
 }

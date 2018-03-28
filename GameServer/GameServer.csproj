@@ -41,7 +41,7 @@
     <Compile Include="SQL\SqlBase.cs" />
     <Compile Include="SQL\Base.cs" />
     <Compile Include="SQL\AccountData.cs" />
-    <Compile Include="SQL\Character.cs" />
+    <Compile Include="SQL\CharacterData.cs" />
     <Compile Include="IO\CommandManager.cs" />
     <Compile Include="IO\Command.cs" />
     <Compile Include="BasicCommands.cs" />
@@ -51,15 +51,12 @@
     <Compile Include="Network\PackageManager.cs" />
     <Compile Include="Network\Package.cs" />
     <Compile Include="Server\PackageFunctions.cs" />
+    <Compile Include="Server\Character.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Network\Network.csproj">
       <Project>{A5C2D6E1-46C3-4F78-A6A2-FAC677B11958}</Project>
       <Name>Network</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\GameData\GameData.csproj">
-      <Project>{4A9D27B2-4980-4108-8CCF-1D2E536226AA}</Project>
-      <Name>GameData</Name>
     </ProjectReference>
     <ProjectReference Include="..\FileManager\FileManager.csproj">
       <Project>{54CAB7AE-4BB4-4C97-A495-E0F358B82A90}</Project>
@@ -68,6 +65,10 @@
     <ProjectReference Include="..\Database\Database.csproj">
       <Project>{B327FD3C-5772-40B3-8B81-F903B7F5689A}</Project>
       <Name>Database</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GameData\GameData.csproj">
+      <Project>{4A9D27B2-4980-4108-8CCF-1D2E536226AA}</Project>
+      <Name>GameData</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

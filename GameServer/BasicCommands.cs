@@ -1,6 +1,7 @@
 ﻿using System;
 using GameServer.IO;
 using System.Collections.Generic;
+using GameData.Network;
 
 namespace GameServer
 {
@@ -124,65 +125,65 @@ namespace GameServer
         #endregion
         #region "account"
         public static Command Account = new Command(new string[] { "account" }, (string[] args) =>
-      {
-          if (args.Length > 1)
           {
-              if (args[0] == "create")
+              if (args.Length > 1)
               {
-                  if (args.Length == 3)
+                  if (args[0] == "create")
                   {
-                      string username = args[1];
-                      string password = args[2];
-                      if (username.Trim(' ') != "" && password.Trim(' ') != "")
+                      if (args.Length == 3)
                       {
-                          if (SQL.AccountData.Create(username, password))
+                          string username = args[1];
+                          string password = args[2];
+                          if (username.Trim(' ') != "" && password.Trim(' ') != "")
                           {
-                              Console.WriteLine("Account " + username + " successfully created");
-                          }
-                          else
-                          {
-                              Console.WriteLine("Failed to create account " + username);
+                              if (SQL.AccountData.Create(username, password) == ResultType.Success)
+                              {
+                                  Console.WriteLine("Account " + username + " successfully created");
+                              }
+                              else
+                              {
+                                  Console.WriteLine("Failed to create account " + username);
+                              }
                           }
                       }
-                  }
-                  else
-                  {
-                      Console.WriteLine("Wrong usage of command account create.");
-                      Console.WriteLine("usage: account create <username> <password>");
-                  }
-              }
-              else if (args[0] == "show")
-              {
-                  string accountId = args[1];
-                  int id = 0;
-                  SQL.AccountData account;
-                  if (int.TryParse(accountId, out id))
-                  {
-                      account = new SQL.AccountData(id);
-                  }
-                  else
-                  {
-                      account = new SQL.AccountData(accountId);
-                  }
-                  if (account != null)
-                  {
-                      Console.WriteLine("Here is the dataset for " + accountId);
-                      Console.WriteLine("id".PadRight(20) + account.Id.ToString());
-                      Console.WriteLine("name".PadRight(20) + account.Username);
-                      Console.WriteLine("password".PadRight(20) + account.Password);
-                      Console.WriteLine(" ### Characters ### ");
-                      foreach (SQL.Character character in SQL.AccountData.GetCharacters(account.Id))
+                      else
                       {
-                          Console.WriteLine(character.Id + " - " + character.Name);
+                          Console.WriteLine("Wrong usage of command account create.");
+                          Console.WriteLine("usage: account create <username> <password>");
                       }
                   }
-                  else
+                  else if (args[0] == "show")
                   {
-                      Console.WriteLine("No dataset found for " + accountId);
+                      string accountId = args[1];
+                      int id = 0;
+                      SQL.AccountData account;
+                      if (int.TryParse(accountId, out id))
+                      {
+                          account = new SQL.AccountData(id);
+                      }
+                      else
+                      {
+                          account = new SQL.AccountData(accountId);
+                      }
+                      if (account != null)
+                      {
+                          Console.WriteLine("Here is the dataset for " + accountId);
+                          Console.WriteLine("id".PadRight(20) + account.Id.ToString());
+                          Console.WriteLine("name".PadRight(20) + account.Username);
+                          Console.WriteLine("password".PadRight(20) + account.Password);
+                          Console.WriteLine(" ### Characters ### ");
+                          foreach (SQL.CharacterData character in SQL.AccountData.GetCharacters(account.Id))
+                          {
+                              Console.WriteLine(character.Id + " - " + character.Name);
+                          }
+                      }
+                      else
+                      {
+                          Console.WriteLine("No dataset found for " + accountId);
+                      }
                   }
               }
-          }
-      });
+          });
         #endregion
         #region "character"
         public static Command Character = new Command(new string[] { "character" }, (string[] args) =>
@@ -194,7 +195,7 @@ namespace GameServer
                     int id = 0;
                     if (int.TryParse(args[1], out id))
                     {
-                        SQL.Character character = SQL.Character.Load(id);
+                        SQL.CharacterData character = SQL.CharacterData.Load(id);
                         if (character != null)
                         {
                             Console.WriteLine("Here is the dataset for character " + id);

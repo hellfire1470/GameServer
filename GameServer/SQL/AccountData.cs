@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using GameData.Network;
 
 namespace GameServer.SQL
 {
@@ -22,21 +23,34 @@ namespace GameServer.SQL
             return Convert.ToBase64String(byteHash);
         }
 
-        public static bool Create(string name, string password)
+
+        protected virtual ResultType Create(string name, string password)
         {
-            //Todo: Filter illegal characters
-            if (name.Trim() == "" || password.Trim() == "") return false;
+            if (name.Length == 0) return ResultType.NameEmpty;
+            if (password.Trim().Length == 0) return ResultType.PasswordEmpty;
 
             if (Global.SqlBase.ExecuteNonQuery("insert into account(name, password) values(@1, @2)", new string[] { name, HashPassword(name, password) }) == 1)
             {
-                return true;
+                return ResultType.Success;
             }
-            return false;
+            //todo: remove test only
+            SetGameKey("123");
+            // endremove
+            return ResultType.UnknownError;
+        }
+
+        public void SetGameKey(string gameKey)
+        {
+            //todo: check for valid game keys
+            if (Global.SqlBase.ExecuteNonQuery("update account set gamekey = @1 where id = @2", new string[] { gameKey, Id.ToString() }) == 1)
+            {
+                Logger.Error("gamekey updated!");
+            }
+            Logger.Error("failed update gamekey");
         }
 
         public void Load(int id)
         {
-
             Dictionary<int, Dictionary<string, string>> results = Global.SqlBase.ExecuteQuery("select id, name, password, gamekey, maxcharacters, banned from account where id = @1", new object[] { id });
             if (results.Count > 0)
             {
@@ -58,13 +72,13 @@ namespace GameServer.SQL
             }
         }
 
-        public static List<Character> GetCharacters(int accountId)
+        public static List<CharacterData> GetCharacters(int accountId)
         {
-            List<int> characterIds = Character.GetCharacterIds(accountId);
-            List<Character> characters = new List<Character>();
+            List<int> characterIds = CharacterData.GetCharacterIds(accountId);
+            List<CharacterData> characters = new List<CharacterData>();
             foreach (int characterId in characterIds)
             {
-                Character character = Character.Load(characterId);
+                CharacterData character = CharacterData.Load(characterId);
                 characters.Add(character);
             }
             return characters;
@@ -72,7 +86,7 @@ namespace GameServer.SQL
 
         public static List<int> GetCharacterIds(int accountId)
         {
-            return Character.GetCharacterIds(accountId);
+            return CharacterData.GetCharacterIds(accountId);
         }
     }
 }

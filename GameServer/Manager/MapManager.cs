@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Database;
-using GameData;
+using GameData.Environment.Location;
 
 public static class MapManager
 {

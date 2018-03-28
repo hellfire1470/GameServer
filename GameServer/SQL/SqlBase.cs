@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
-using GameData;
+using GameData.Environment.Entity;
+using GameData.Environment.Item;
+using GameData.Environment.Location;
 
 namespace GameServer.SQL
 {
@@ -15,19 +17,19 @@ namespace GameServer.SQL
         public FractionType Target { get; set; }
     }
 
-    public class Stat
-    {
-        public StatType Type { get; set; }
-        public float Value { get; set; }
-    }
-
+    /* public class Stat
+     {
+         public StatType Type { get; set; }
+         public float Value { get; set; }
+     }
+ */
     public class Item
     {
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public ItemType Type { get; set; }
-        public List<Stat> Stats { get; set; }
+        public SlotType Type { get; set; }
+        // public List<Stat> Stats { get; set; }
         public int MaxSockets { get; set; }
         public ItemQuality Quality { get; set; }
     }
@@ -60,7 +62,7 @@ namespace GameServer.SQL
         public int DropListId { get; set; }
         public RaceType Race { get; set; }
         public string Name { get; set; }
-        public EntityQuality Quality { get; set; }
+        public RarityType Quality { get; set; }
         public int Life { get; set; }
         public int LifePL { get; set; }
         public int Level { get; set; }
